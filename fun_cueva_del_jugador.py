@@ -1,5 +1,6 @@
 import time
 import fun_borrar_pantalla
+import fun_extraccion_dict
 
 
 def cama(vida, tiempo):  # Para recuperar toda la vida hay que dormir 8 horas
@@ -15,22 +16,35 @@ def cama(vida, tiempo):  # Para recuperar toda la vida hay que dormir 8 horas
 
 
 def inventario(mochila, mochila_sin_uso):  # La mochila es una lista de cosas que lleva el personaje
-    mochila_tipo_elementos = mochila.keys()
-    mochila_num_elementos = mochila.values()
-    if len(mochila_sin_uso) == 0:  # mochila_sin_uso == inventario
-        print('Todavía no tienes nada guardado en el inventario')  # Lista de cosas que se deja el personaje en su cueva
-        while seguir:
-            nuevo = input('¿Deseas añadir algo? [S/N]: ')
-            if nuevo.lower() == 's':
+    run1 = True
+    if len(mochila_sin_uso) == 0:  # mochila_sin_uso == inventario. Si == 0; esta vacía, solo puede añadir
+        while run1:
+            print('Todavía no tienes nada guardado en el inventario')  # El inventario es una lista de cosas que se deja el personaje en su cueva
+            nuevo_item = input('¿Deseas añadir algo? [s/n]: ')
+            if nuevo_item.lower() == 's':
                 fun_borrar_pantalla.borrar_pantalla()
                 num = int(input('¿Cuantas cosas vas a añadir?: '))
                 print(f'Acuerdate que tienes {len(mochila)} guardadas en tu mochila:\n')
-                for index, tipo, numero in zip(range(len(mochila)), mochila_tipo_elementos, mochila_num_elementos):
-                    print(f'{index + 1}. {tipo} ({numero})\n')
-                for item in range(num):  # Devuelve inventario y mochila personal
+                fun_extraccion_dict.extraccion_dict(mochila, 'cantidad')
+                for item in range(num):  # Para cada nuevo elemento añadido...
+                    objeto_clase = input(f'{item + 1}. ¿Qué clase de objeto vas a añadir?:\n'  # Especificar 4 opciones: clase (arma, escudo...), nombre (espada mágica, escudo básico...), característica (cantidad, daño...), valor (de cada característica)
+                    f'1. Arma\n'
+                    f'2. Escudo\n'
+                    f'3. Poción\n'
+                    f'Tu elección [1/2/3]: ')
+                    # Pensando en que hay que usar diccionarios
+            else:
+                pass
+    else:  # mochila_sin_uso no está vacía, puede elegir entre añadir o coger
+        pass
+    """
+    if len(mochila_sin_uso) == 0:  # mochila_sin_uso == inventario. Si == 0; esta vacía
+
+            
+                for item in range(num):  # Desarrolla inventario y mochila personal
                     nuevo_objeto_tipo = input(f'{item}. Introduce el nombre del objeto deseado: ')
                     if mochila.get(nuevo_objeto_tipo.lower()) > 1:
-                        while True:  # Meter un Try/Except
+                        while True:
                             nuevo_objeto_numero = input(f'¿Cuántos elementos de este tipo quieres meter? Tienes {mochila.get(nuevo_objeto_tipo.lower())}')
                             try:
                                 nuevo_objeto_numero = int(nuevo_objeto_numero)
@@ -50,7 +64,7 @@ def inventario(mochila, mochila_sin_uso):  # La mochila es una lista de cosas qu
                     else:
                         pass
             elif nuevo.lower() == 'n':
-                return mochila_sin_uso  # Sale del inventario
+                return mochila_sin_uso  # Sale del inventario. No tienes nada
             else:
                 print('Opción incorrecta')
                 error = input('¿Quieres salir o seguir en el inventario? [S/I]: ')
@@ -89,5 +103,6 @@ def inventario(mochila, mochila_sin_uso):  # La mochila es una lista de cosas qu
                 else:
                     print('Opción no encontrada')
                     continue
-
+    """
 # Corregir Line 79
+# Line 30: variable
