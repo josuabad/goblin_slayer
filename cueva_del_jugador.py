@@ -16,6 +16,7 @@ def cama(vida, tiempo):  # Para recuperar toda la vida hay que dormir 8 horas
 
 
 def inventario(mochila, guardado):  # La mochila es una lista de cosas que lleva el personaje
+    inventariado = dict(guardado)
     run1 = True
     if len(guardado) == 0:  # guardado == inventario. Si == 0; esta vacía, solo puede añadir
         while run1:
@@ -35,9 +36,39 @@ def inventario(mochila, guardado):  # La mochila es una lista de cosas que lleva
                             if cantidad > 1:  # Está en la mochila. ¿Tienes más de 1, cuántos hay que guardar?
                                 print(f'Tienes un total de {cantidad} {elemento}s guardad@s')
                                 guardar = int(input('¿Cuánt@s quieres guardar?: '))
-                                # GUARDAR TODOS LOS ATRIBUTOS
-                                lista_keys = list(mochila.keys())
-                                lista_values = list(mochila.values())
+                                # Extracción de elementos
+                                """
+                                Existen 3 casos:
+                                1. Guardas parte de los elementos
+                                2. Guardas todos los elementos
+                                3. Te equivocas y decides guardar una cantidad que no existe; ya sea un número superior, negativo/=0, o sea una letra (ValueError)
+                                """
+                                # Quiero saber los atributos de un elemento que no se dónde se encuentra.
+                                mochila_view_keys = list(mochila.keys())
+                                mochila_view_values = list(mochila.values())
+                                # Tengo que saber dónde está para preguntarle cositas
+                                donde_encontrar = mochila_view_keys.index(elemento)
+                                # Ahora quiero saber los atributos del elemento.
+                                donde_buscar = list(mochila_view_values[donde_encontrar].keys())
+                                # Pero no se donde tengo que cambiar
+                                donde_cambiar = donde_buscar.index('cantidad')
+                                # Y, como los quiero manipular, pongo como una lista los valores que tengo que cambiar
+                                que_cambiar = list(mochila_view_values[donde_encontrar].values())
+                                # Desarrollo
+                                if guardar < cantidad and guardar > 0:  # Caso 1
+                                    inventariado.update({mochila_view_keys[donde_encontrar]: {donde_buscar[donde_cambiar]: guardar}})  # 1º Metes en el inventario todo lo que quieres guardar
+                                    # Pasar todos los atributos restantes del elemento
+                                    donde_buscar.pop(donde_cambiar)
+                                    que_cambiar.pop(donde_cambiar)
+                                    for elmnt in donde_buscar:
+                                        inventariado[mochila_view_keys[donde_encontrar]][elmnt] = que_cambiar[donde_buscar.index(elmnt)]
+                                    # Borrar el sobrante de la mochila
+                                    cantidad_original = fun_extraccion_dict.extraer(mochila, 'espada', 'cantidad')
+                                    mochila[mochila_view_keys[donde_encontrar]]['cantidad'] = cantidad_original - guardar
+                                elif guardar == cantidad:  # Caso 2
+                                    inventariado.update({mochila_view_keys[donde_encontrar]: {donde_buscar[donde_cambiar]: guardar}})  # 1º Metes en el inventario todo lo que quieres guardar
+                                else:  # Caso 3. Se podría usar un try/except
+                                    pass
                             else:
                                 pass
                         else:  # El caso contrario es que no lo este
@@ -51,8 +82,10 @@ def inventario(mochila, guardado):  # La mochila es una lista de cosas que lleva
                                 else:
                                     error1 = input('No te he entendido.')
                                     continue
-                    # Pensando en que hay que usar diccionarios
             else:
                 pass
-    else:  # guardado no está vacía, puede elegir entre añadir o coger
+    else:  # guardado no está vacía, puede elegir entre añadir o coger elementos
         pass
+
+# Line 38
+# Este código no soporta errores de valor
