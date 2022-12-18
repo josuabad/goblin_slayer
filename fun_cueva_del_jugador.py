@@ -14,7 +14,7 @@ def cama(vida, tiempo):  # Para recuperar toda la vida hay que dormir 8 horas
             fun_borrar_pantalla.borrar_pantalla()
         return relacion_sueño * tiempo  # Vida recuperada
 
-
+"""
 def inventario(mochila, mochila_sin_uso):  # La mochila es una lista de cosas que lleva el personaje
     run1 = True
     if len(mochila_sin_uso) == 0:  # mochila_sin_uso == inventario. Si == 0; esta vacía, solo puede añadir
@@ -37,6 +37,7 @@ def inventario(mochila, mochila_sin_uso):  # La mochila es una lista de cosas qu
                 pass
     else:  # mochila_sin_uso no está vacía, puede elegir entre añadir o coger
         pass
+    """
     """
     if len(mochila_sin_uso) == 0:  # mochila_sin_uso == inventario. Si == 0; esta vacía
 
@@ -103,6 +104,7 @@ def inventario(mochila, mochila_sin_uso):  # La mochila es una lista de cosas qu
                 else:
                     print('Opción no encontrada')
                     continue
-    """
+"""
+
 # Corregir Line 79
 # Line 30: variable
