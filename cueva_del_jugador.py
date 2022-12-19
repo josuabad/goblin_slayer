@@ -63,8 +63,8 @@ def inventario(mochila, guardado):  # La mochila es una lista de cosas que lleva
                                     for elmnt in donde_buscar:
                                         inventariado[mochila_view_keys[donde_encontrar]][elmnt] = que_cambiar[donde_buscar.index(elmnt)]
                                     # Borrar el sobrante de la mochila
-                                    cantidad_original = fun_extraccion_dict.extraer(mochila, 'espada', 'cantidad')
-                                    mochila[mochila_view_keys[donde_encontrar]]['cantidad'] = cantidad_original - guardar
+                                    # cantidad_original = fun_extraccion_dict.extraer(mochila, 'espada', 'cantidad')
+                                    # mochila[mochila_view_keys[donde_encontrar]]['cantidad'] = cantidad_original - guardar
                                 elif guardar == cantidad:  # Caso 2
                                     inventariado.update({mochila_view_keys[donde_encontrar]: {donde_buscar[donde_cambiar]: guardar}})  # 1º Metes en el inventario todo lo que quieres guardar
                                 else:  # Caso 3. Se podría usar un try/except
@@ -87,5 +87,5 @@ def inventario(mochila, guardado):  # La mochila es una lista de cosas que lleva
     else:  # guardado no está vacía, puede elegir entre añadir o coger elementos
         pass
 
-# Line 38
+# Line 66:67
 # Este código no soporta todos los errores de valor
