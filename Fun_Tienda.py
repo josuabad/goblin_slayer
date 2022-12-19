@@ -12,100 +12,102 @@ def Fun_Tienda():
             numero_tienda_sublista = str(input("Introduzca la letra dentro del paréntesis de lo que desee: "))  # Aquí tienes que especificar que arma quieres colocando la letra dentro del paréntesis
             if numero_tienda_sublista == 'EM':  # Si colocas las letras EM, pides la espada mágica.
                 print('La espada mágica cuesta: 200 monedas')  # Aquí te imprime cuanto cuesta la espada mágica.
-                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))  # Variable para verificar si quieres hacer la compra
+                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))  # Variable para verificar si quieres hacer la compra.
                 if numero_de_compra == 1:  # Indicas 1 si quieres la compra.
-                    cuenta_bancaria = cuenta_bancaria - 200  # Variable para guardar tu dinero
+                    cuenta_bancaria = cuenta_bancaria - 200  # Variable para guardar tu dinero (pero mejor hacer un diccionario en personajes.
                     print("¡Gracias por tu compra, aquí tiene su espada mágica!")  # Agradecimiento
                     # dar objeto y guardarla en la lista del personaje
 
 
-            elif numero_tienda_sublista == 'E':
-                print(f'La espada cuesta: 10 monedas')
-                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))
-                if numero_de_compra == 1:
+            elif numero_tienda_sublista == 'E':  # Si colocas las letras E, pides la espada.
+                print(f'La espada cuesta: 10 monedas')  # Aquí te imprime cuanto cuesta la espada.
+                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))  # Variable para verificar si quieres hacer la compra.
+                if numero_de_compra == 1:  # Indicas 1 si quieres la compra.
                     cuenta_bancaria = cuenta_bancaria - 10
-                    print("¡Gracias por tu compra, aquí tiene su espada!")
+                    print("¡Gracias por tu compra, aquí tiene su espada!")  # Agradecimiento
                     # insertar algo que se la de a la función del personaje
 
-            elif numero_tienda_sublista == 'H2':
-                print(f'El hacha de dos manos cuesta: 30 monedas')
-                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))
-                if numero_de_compra == 1:
+            elif numero_tienda_sublista == 'H2':  # Si colocas las letras H2, pides el hacha de dos manos.
+                print(f'El hacha de dos manos cuesta: 30 monedas')  # Aquí te imprime cuanto cuesta el hacha de dos manos.
+                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))  # Variable para verificar si quieres hacer la compra.
+                if numero_de_compra == 1:  # Indicas 1 si quieres la compra.
                     cuenta_bancaria = cuenta_bancaria - 30
-                    print("¡Gracias por tu compra, aquí tiene su hacha de dos manos!")
+                    print("¡Gracias por tu compra, aquí tiene su hacha de dos manos!")  # Agradecimiento
                     # insertar algo que se la de a la función del personaje
 
-            elif numero_tienda_sublista == 'S':
-                print(f'El escudo cuesta: 10 monedas')
-                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))
-                if numero_de_compra == 1:
+            elif numero_tienda_sublista == 'S':  # Si colocas la letra S, pides el escudo.
+                print(f'El escudo cuesta: 10 monedas')  # Aquí te imprime cuanto cuesta el escudo.
+                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))  # Variable para verificar si quieres hacer la compra.
+                if numero_de_compra == 1:  # Indicas 1 si quieres la compra.
                     cuenta_bancaria = cuenta_bancaria - 10
-                    print("¡Gracias por tu compra, aquí tiene su escudo!")
+                    print("¡Gracias por tu compra, aquí tiene su escudo!")  # Agradecimiento
                     # insertar algo que se la de a la función del personaje
 
             else:
                 print("No disponemos de esa arma en la tienda, vuelva a seleccionarlo.")
                 continue
 
-        elif numero_tienda_lista == 2:
-            print(tienda[1])
-            numero_tienda_sublista = str(input("Introduzca la letra dentro del paréntesis de lo que desee: "))
-            if numero_tienda_sublista == 'A1':
-                print(f'La armadura nivel 1 cuesta: 30 monedas')
-                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))
-                if numero_de_compra == 1:
+        elif numero_tienda_lista == 2:  # Si la variable es igual a 2 escogiste armadura.
+            print(tienda[1])  # Aquí imprime la posición 1 de la lista, y esa es otra lista que contiene todas las armaduras.
+            numero_tienda_sublista = str(input("Introduzca la letra dentro del paréntesis de lo que desee: "))  # Aquí tienes que especificar que armadura quieres colocando la letra dentro del paréntesis
+            if numero_tienda_sublista == 'A1':  # Si colocas las letras A1, pides armadura nivel 1.
+                print(f'La armadura nivel 1 cuesta: 30 monedas')  # Aquí te imprime cuanto cuesta la armadura nivel 1.
+                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))  # Variable para verificar si quieres hacer la compra.
+                if numero_de_compra == 1:  # Indicas 1 si quieres la compra.
                     cuenta_bancaria = cuenta_bancaria - 30
-                    print("¡Gracias por tu compra, aquí tiene su armadura nivel 1!")
+                    print("¡Gracias por tu compra, aquí tiene su armadura nivel 1!")  # Agradecimiento
                     # insertar algo que se la de a la función del personaje
 
-            elif numero_tienda_sublista == 'A2':
-                print(f'La armadura nivel 2 cuesta: 40 monedas')
-                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))
-                if numero_de_compra == 1:
+            elif numero_tienda_sublista == 'A2':  # Si colocas las letras A2, pides la armadura nivel 2.
+                print(f'La armadura nivel 2 cuesta: 40 monedas')  # Aquí te imprime cuanto cuesta la armadura nivel 2.
+                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))  # Variable para verificar si quieres hacer la compra.
+                if numero_de_compra == 1:  # Indicas 1 si quieres la compra.
                     cuenta_bancaria = cuenta_bancaria - 40
-                    print("¡Gracias por tu compra, aquí tiene su armadura nivel 2!")
+                    print("¡Gracias por tu compra, aquí tiene su armadura nivel 2!")  # Agradecimiento
                     # insertar algo que se la de a la función del personaje
 
-            elif numero_tienda_sublista == 'A3':
-                print(f'La armadura nivel 3 cuesta: 50 monedas')
-                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))
-                if numero_de_compra == 1:
+            elif numero_tienda_sublista == 'A3':  # Si colocas las letras A3, pides la armadura nivel 3.
+                print(f'La armadura nivel 3 cuesta: 50 monedas')  # Aquí te imprime cuanto cuesta la armdura nivel 3.
+                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))  # Variable para verificar si quieres hacer la compra.
+                if numero_de_compra == 1:  # Indicas 1 si quieres la compra.
                     cuenta_bancaria = cuenta_bancaria - 50
-                    print("¡Gracias por tu compra, aquí tiene su armadura nivel 3!")
+                    print("¡Gracias por tu compra, aquí tiene su armadura nivel 3!")  # Agradecimiento
                     # insertar algo que se la de a la función del personaje
 
             else:
                 print("No disponemos de esa armadura en la tienda, vuelva a seleccionarlo.")
                 continue
 
-        elif numero_tienda_lista == 3:
-            print(tienda[2])
-            print(f'La pocion de vida cuesta: 20 monedas')
-            numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))
-            if numero_de_compra == 1:
+        elif numero_tienda_lista == 3:  # Si la variable es igual a 3 escogiste poción.
+            print(tienda[2])  # Aquí imprime la posición 2 de la lista, y esa es otra lista que contiene la poción.
+            print(f'La poción de vida cuesta: 20 monedas')  # Aquí te imprime cuanto cuesta la poción.
+            numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))  # Variable para verificar si quieres hacer la compra.
+            if numero_de_compra == 1:  # Indicas 1 si quieres la compra.
                 cuenta_bancaria = cuenta_bancaria - 20
-                print("¡Gracias por tu compra, aquí tiene su armadura nivel 1!")
+                print("¡Gracias por tu compra, aquí tiene su poción de vida!")  # Agradecimiento
                 # insertar algo que se la de a la función del personaje
 
             else:
-                print("No disponemos de esa pocion en la tienda, vuelva a seleccionarlo.")
-                continue
+                print("No disponemos de esa pocion en la tienda, vuelva a seleccionarlo.")  # Aquí es por si introduce una poción que no exista.
+                continue  # Aquí lo devuelve a que quiere de pociones.
 
-        elif numero_tienda_lista == 4:
-            print("Hasta pronto, espero verlo de nuevo")
-            break
+        elif numero_tienda_lista == 4:  # Si la variable es igual a 4 es porque escogiste salir.
+            print("Hasta pronto, espero verlo de nuevo")  # Despedida.
+            break  # Aquí ya sales del bucle (Tienda)
 
         else:
-            print("No tenemos eso en la tienda, ¡vuelva a introducir un número válido!")
-        continue
+            print("No tenemos eso en la tienda, ¡vuelva a introducir un número válido!")  # Esto es por si el jugador introduce algo que no está
+        continue  # Aquí te devuelve al menú de la tienda
 
 
 cuenta_bancaria = 1000  # aquí habría que crear como una cuenta bancaria, en donde vaya acumulando lo que se gana y
 # luego restando cuando se va a la tienda
 tienda = [['(EM) Espada Mágica', '(E) Espada', '(H2) Hacha dos manos', '(S) Escudo'],
           ['(A1) Armadura nivel 1', '(A2) Armadura nivel 2', '(A3) Armadura nivel 3'], ['(P) Poción de vida']]
+# Tienda se creo en una lista con sublistas, de manera que la posición uno sean las armas, la 2 las armadruras y la 3 la poción.
+
 # print(tienda[0])
-Fun_Tienda()
+Fun_Tienda()  # Llamando a la función tienda
 
 #          NOTAS          #
 
