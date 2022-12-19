@@ -26,8 +26,19 @@ def modificar(diccionario_emisor, from_key, atributo, valor_de_cambio, diccionar
     que_cambiar = list(diccionario_emisor_view_values[donde_encontrar].values())
     # Desarrollo
     valor_de_origen = extraer(diccionario_emisor, from_key, atributo)
-    if type(valor_de_cambio) == int:
-        if valor_de_cambio < valor_de_origen and valor_de_cambio > 0:
+    if cambiar:
+        diccionario_emisor[from_key][atributo] = valor_de_cambio
+        return diccionario_emisor
+    else:
+        if valor_de_cambio == valor_de_origen:
+            diccionario_receptor.update({diccionario_emisor_view_keys[donde_encontrar]: {donde_buscar[donde_cambiar]: valor_de_cambio}})
+            donde_buscar.pop(donde_cambiar)
+            que_cambiar.pop(donde_cambiar)
+            for elmnt in donde_buscar:
+                diccionario_receptor[diccionario_emisor_view_keys[donde_encontrar]][elmnt] = que_cambiar[donde_buscar.index(elmnt)]
+            diccionario_emisor.pop(from_key)
+            return diccionario_emisor, diccionario_receptor
+        elif valor_de_cambio < valor_de_origen and valor_de_cambio > 0:
             # 1º Cambiar el atributo           
             diccionario_receptor.update({diccionario_emisor_view_keys[donde_encontrar]: {donde_buscar[donde_cambiar]: valor_de_cambio}})
             # 2º Pasar el resto de atributos
@@ -36,14 +47,8 @@ def modificar(diccionario_emisor, from_key, atributo, valor_de_cambio, diccionar
             for elmnt in donde_buscar:
                 diccionario_receptor[diccionario_emisor_view_keys[donde_encontrar]][elmnt] = que_cambiar[donde_buscar.index(elmnt)]
             # 3º Borrar el sobrante del anterior
-            diccionario_emisor.update({diccionario_emisor_view_keys[donde_encontrar]: {donde_buscar[donde_cambiar]: valor_de_origen - valor_de_cambio}})
+            diccionario_emisor[from_key][atributo] = valor_de_origen - valor_de_cambio
+            # diccionario_emisor.update({diccionario_emisor_view_keys[donde_encontrar]: {atributo: valor_de_origen - valor_de_cambio}})
             return diccionario_emisor, diccionario_receptor
-        elif valor_de_cambio == valor_de_origen:
-            diccionario_receptor.update({diccionario_emisor_view_keys[donde_encontrar]: {donde_buscar[donde_cambiar]: valor_de_cambio}})
-            diccionario_emisor.pop(from_key)
-            return diccionario_emisor, diccionario_receptor
-        else:  # Hay que soportar el error desde el programa
-            pass
-    else:
-        diccionario_emisor.update({diccionario_emisor_view_keys[donde_encontrar]: {donde_buscar[donde_cambiar]: valor_de_cambio}})
-        return diccionario_emisor
+        else:
+            return False  # Hay que volver a perdir desde le sistema principal una opción válida
