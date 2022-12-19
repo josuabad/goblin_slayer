@@ -2,21 +2,21 @@
 # Esta función consta de listas dentro de lista principal y se accede a ella dependiendo de la posición.
 
 def Fun_Tienda():
-    print("¡Bienvenido a la tienda!\n¿Qué te gustaría comprar?")
-    Fun_Tienda = True
-    while Fun_Tienda == True:
+    print("¡Bienvenido a la tienda!\n¿Qué te gustaría comprar?")  # La bienvenida a la tienda.
+    Fun_Tienda = True  # Mientras que la función de tienda sea True, siempre va a estar dentro del bucle.
+    while Fun_Tienda == True:  # Bucle para que esté dentro de la tienda hasta que quiera SALIR.
         numero_tienda_lista = int(input("Introduzca el número de lo que desee:\n1) Armas \n2) Armadura \n3) Pociones "
-                                        "\n4) Salir \nNúmero: "))
-        if numero_tienda_lista == 1:
-            print(tienda[0])
-            numero_tienda_sublista = str(input("Introduzca la letra dentro del paréntesis de lo que desee: "))
-            if numero_tienda_sublista == 'EM':
-                print('La espada mágica cuesta: 200 monedas')
-                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))
-                if numero_de_compra == 1:
-                    cuenta_bancaria = cuenta_bancaria - 200
-                    print("¡Gracias por tu compra, aquí tiene su espada mágica!")
-                    # dar objeto a la mochila del personaje
+                                        "\n4) Salir \nNúmero: "))  # Variable para ver que quieres de la tienda
+        if numero_tienda_lista == 1:  # Si la variable es igual a 1 escogiste arma.
+            print(tienda[0])  # Aquí imprime la posición 0 de la lista, y esa es otra lista que contiene todas las armas.
+            numero_tienda_sublista = str(input("Introduzca la letra dentro del paréntesis de lo que desee: "))  # Aquí tienes que especificar que arma quieres colocando la letra dentro del paréntesis
+            if numero_tienda_sublista == 'EM':  # Si colocas las letras EM, pides la espada mágica.
+                print('La espada mágica cuesta: 200 monedas')  # Aquí te imprime cuanto cuesta la espada mágica.
+                numero_de_compra = int(input("Deseas comprarla: \n1) Sí \n2) No \nTu opción es: "))  # Variable para verificar si quieres hacer la compra
+                if numero_de_compra == 1:  # Indicas 1 si quieres la compra.
+                    cuenta_bancaria = cuenta_bancaria - 200  # Variable para guardar tu dinero
+                    print("¡Gracias por tu compra, aquí tiene su espada mágica!")  # Agradecimiento
+                    # dar objeto y guardarla en la lista del personaje
 
 
             elif numero_tienda_sublista == 'E':
@@ -106,7 +106,6 @@ tienda = [['(EM) Espada Mágica', '(E) Espada', '(H2) Hacha dos manos', '(S) Esc
           ['(A1) Armadura nivel 1', '(A2) Armadura nivel 2', '(A3) Armadura nivel 3'], ['(P) Poción de vida']]
 # print(tienda[0])
 Fun_Tienda()
-
 
 #          NOTAS          #
 
