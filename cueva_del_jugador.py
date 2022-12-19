@@ -88,4 +88,4 @@ def inventario(mochila, guardado):  # La mochila es una lista de cosas que lleva
         pass
 
 # Line 38
-# Este código no soporta errores de valor
+# Este código no soporta todos los errores de valor
