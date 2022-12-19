@@ -31,24 +31,25 @@ def modificar(diccionario_emisor, from_key, atributo, valor_de_cambio, diccionar
         return diccionario_emisor
     else:
         if valor_de_cambio == valor_de_origen:
-            diccionario_receptor.update({diccionario_emisor_view_keys[donde_encontrar]: {donde_buscar[donde_cambiar]: valor_de_cambio}})
+            diccionario_receptor.update({from_key: {donde_buscar[donde_cambiar]: valor_de_cambio}})
             donde_buscar.pop(donde_cambiar)
             que_cambiar.pop(donde_cambiar)
             for elmnt in donde_buscar:
-                diccionario_receptor[diccionario_emisor_view_keys[donde_encontrar]][elmnt] = que_cambiar[donde_buscar.index(elmnt)]
+                diccionario_receptor[from_key][elmnt] = que_cambiar[donde_buscar.index(elmnt)]
             diccionario_emisor.pop(from_key)
             return diccionario_emisor, diccionario_receptor
         elif valor_de_cambio < valor_de_origen and valor_de_cambio > 0:
             # 1º Cambiar el atributo           
-            diccionario_receptor.update({diccionario_emisor_view_keys[donde_encontrar]: {donde_buscar[donde_cambiar]: valor_de_cambio}})
+            diccionario_receptor.update({from_key: {atributo: valor_de_cambio}})
+            # diccionario_receptor[from_key][atributo] = valor_de_cambio
             # 2º Pasar el resto de atributos
             donde_buscar.pop(donde_cambiar)
             que_cambiar.pop(donde_cambiar)
             for elmnt in donde_buscar:
-                diccionario_receptor[diccionario_emisor_view_keys[donde_encontrar]][elmnt] = que_cambiar[donde_buscar.index(elmnt)]
+                diccionario_receptor[from_key][elmnt] = que_cambiar[donde_buscar.index(elmnt)]
             # 3º Borrar el sobrante del anterior
             diccionario_emisor[from_key][atributo] = valor_de_origen - valor_de_cambio
-            # diccionario_emisor.update({diccionario_emisor_view_keys[donde_encontrar]: {atributo: valor_de_origen - valor_de_cambio}})
+            # diccionario_emisor.update({from_key: {atributo: valor_de_origen - valor_de_cambio}})
             return diccionario_emisor, diccionario_receptor
         else:
             return False  # Hay que volver a perdir desde le sistema principal una opción válida
