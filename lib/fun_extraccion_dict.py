@@ -85,3 +85,16 @@ def modificar(diccionario, from_key, atributo, valor_de_cambio, tipo_operacion='
     else:
         diccionario[from_key][atributo] = valor_de_cambio
         return diccionario
+
+
+def nuevo(diccionario, from_key):
+    """
+    Casos:
+    - No existe este elemento dentro del diccionario
+        - Contar el número de atributos que puede tener ese elemento
+        - Añadir cada atributo y su correspondiente valor. Sin contar la cantidad.
+        - Añadir la cantidad de elementos, pueden haber varias pócimas en el bolsillo (por ejemplo)
+    - Existe el elemento dentro del diccionario
+        - Mensaje de, ya tienes este elemento en el diccionario, quieres guardarlo (sumar cantidad)?
+    """
+    pass
