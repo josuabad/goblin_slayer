@@ -1,3 +1,6 @@
+import articulos
+
+
 def extraer(diccionario, from_key, atributo, extrae_valor=True):
     # Explicación:
     # diccionario       ----    Diccionario
@@ -88,13 +91,34 @@ def modificar(diccionario, from_key, atributo, valor_de_cambio, tipo_operacion='
 
 
 def nuevo(diccionario, from_key):
-    """
-    Casos:
-    - No existe este elemento dentro del diccionario
-        - Contar el número de atributos que puede tener ese elemento
-        - Añadir cada atributo y su correspondiente valor. Sin contar la cantidad.
-        - Añadir la cantidad de elementos, pueden haber varias pócimas en el bolsillo (por ejemplo)
-    - Existe el elemento dentro del diccionario
-        - Mensaje de, ya tienes este elemento en el diccionario, quieres guardarlo (sumar cantidad)?
-    """
-    pass
+    # Explicación:
+    # diccionario    ----    Diccionario de origen
+    # from_key       ----    Cuál es la palabra clave desde dónde buscar
+    # Desarrollo
+    try:
+        diccionario[from_key]
+        run = True
+        while run:
+            alternativa = input('Este artículo ya existe. ¿Quieres añadir una nueva cantidad? [s/n]: ')
+            if alternativa.lower() == 's':
+                modificar(diccionario, from_key, 'cantidad', 1, 'suma')
+                return diccionario
+            elif alternativa.lower() == 'n':
+                return False
+            else:
+                while True:
+                    opc = input('Ha habido un error. ¿Quieres repetir o salir? [r/s]: ')
+                    if opc.lower() == 'r':
+                        break
+                    elif opc.lower() == 's':
+                        return False
+                    else:
+                        continue
+    except KeyError:
+        estado = articulos.clase(from_key)
+        if estado == 'arma':
+            diccionario.update(articulos.arma(from_key))
+        else:  # Única otra opción es que sea poción porque no hay más
+            diccionario.update(articulos.pocion(from_key))
+        modificar(diccionario, from_key, 'cantidad', 1)
+        return diccionario
