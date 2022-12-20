@@ -1,6 +1,6 @@
 import time
 from lib import fun_borrar_pantalla
-from lib import fun_extraccion_dict
+from lib import fun_dict
 
 
 def cama(vida, tiempo):  # Para recuperar toda la vida hay que dormir 8 horas
@@ -26,13 +26,13 @@ def inventario(mochila, guardado):  # La mochila es una lista de cosas que lleva
                 fun_borrar_pantalla.borrar()
                 num = int(input('¿Cuántos elementos distintos vas a añadir?: '))
                 print(f'Acuerdate que tienes {len(mochila)} elementos distintos guardados en tu mochila:\n')
-                fun_extraccion_dict.extraer(mochila, 'any', 'cantidad', False)
+                fun_dict.extraer(mochila, 'any', 'cantidad', False)
                 for item in range(num):  # Para cada nuevo elemento distinto añadido...
                     run2 = True
                     while run2:
                         elemento = input(f'{item + 1}. ¿Qué elemento vas a añadir?: ')
                         if mochila.get(elemento) != None:  # Verificar que el elemento está en la mochila
-                            cantidad = fun_extraccion_dict.extraer(mochila, elemento, 'cantidad')
+                            cantidad = fun_dict.extraer(mochila, elemento, 'cantidad')
                             if cantidad > 1:  # Está en la mochila. ¿Tienes más de 1, cuántos hay que guardar?
                                 print(f'Tienes un total de {cantidad} {elemento}s guardad@s')
                                 guardar = int(input('¿Cuánt@s quieres guardar?: '))
