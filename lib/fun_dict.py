@@ -63,33 +63,6 @@ def intercambiar(diccionario_emisor, from_key, atributo, valor_de_cambio, diccio
         return False  # Hay que volver a perdir desde le sistema principal una opción válida
 
 
-def modificar(diccionario, from_key, atributo, valor_de_cambio, tipo_operacion='modificar'):
-    # Explicación:
-    # diccionario              ----    Diccionario de origen
-    # from_key                 ----    Cuál es la palabra clave desde dónde buscar
-    # atributo                 ----    Atributo a buscar de la palabra clave
-    # valor_de_cambio          ----    Nuevo valor a guardar en el diccionario final
-    # tipo_operacion           ----    Si modificar: solo modifica el valo por el nuevo; Si no modificar, entonces suma/resta/multiplica/divide el valor de origen con el nuevo
-    # Desarrollo:
-    if tipo_operacion != 'modificar':
-        valor_de_origen = extraer(diccionario, from_key, atributo)
-        if tipo_operacion == 'sumar':
-            diccionario[from_key][atributo] = valor_de_origen + valor_de_cambio
-            return diccionario
-        elif tipo_operacion == 'restar':
-            diccionario[from_key][atributo] = valor_de_origen - valor_de_cambio
-            return diccionario
-        elif tipo_operacion == 'multiplicar':
-            diccionario[from_key][atributo] = valor_de_origen * valor_de_cambio
-            return diccionario
-        elif tipo_operacion == 'dividir':
-            diccionario[from_key][atributo] = valor_de_origen / valor_de_cambio
-            return diccionario
-    else:
-        diccionario[from_key][atributo] = valor_de_cambio
-        return diccionario
-
-
 def nuevo(diccionario, from_key):
     # Explicación:
     # diccionario    ----    Diccionario de origen

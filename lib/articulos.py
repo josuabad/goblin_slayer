@@ -4,9 +4,13 @@ import random
 
 def arma(tipo):
     if tipo == 'espada':
-        dano = random.randint(0, 8)
+        dano_arma = random.randint(0, 8)
         precio = 10
-        return {'espada': {'daño': dano, 'precio': precio, 'venta': precio * 0.8}}
+        return {'espada': {'daño': dano_arma, 'precio': precio, 'venta': precio * 0.8}}
+    elif tipo == 'puños' or tipo == 'puño':
+        dano_arma = random.randint(0, 4)
+        precio = 0
+        return {'puños': {'daño': dano_arma, 'precio': precio, 'venta': precio * 0.8}}
 
 
 def pocion():
