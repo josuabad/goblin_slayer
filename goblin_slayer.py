@@ -1,7 +1,49 @@
 # Versión oficial
-import random
+import time
 from lib import features
 from lib import fun_puntos
+
+
+def habilidades(habilidades, puntos):
+    if puntos == 0:
+        print('No tienes puntos de habilidad disponibles')
+        print('Sigue jugando para conseguir mejoras y subir de nivel')
+        time.sleep(3)
+        features.borrar_pantalla
+        return habilidades, puntos
+    else:
+        while True:
+            print(f'Tienes {puntos} puntos disponibles para tus habilidades (fuerza/destreza/constitución)')
+            decision_1 = input('¿Deseas repartirlos? [s/n]: ')
+            if decision_1.lower() == 's':
+                while True:
+                    habilidad = input('¿Qué habilidad vas a mejorar? [f/d/c]: ')
+                    num_puntos = int(input('¿Cuántos puntos vas a utilizar?: '))
+                    if habilidad.lower() == 'f' and puntos >= 0 and num_puntos <= puntos:
+                        reparto = fun_puntos.nuevo_punto(habilidades, 'fuerza', num_puntos, puntos)
+                        puntos = reparto[1]
+                        return habilidades, puntos
+                    elif habilidad.lower() == 'd' and puntos >= 0 and num_puntos <= puntos:
+                        reparto = fun_puntos.nuevo_punto(habilidades, 'destreza', num_puntos, puntos)
+                        puntos = reparto[1]
+                        return habilidades, puntos
+                    elif habilidad.lower() == 'c' and puntos >= 0 and num_puntos <= puntos:
+                        reparto = fun_puntos.nuevo_punto(habilidades, 'constitucion', num_puntos, puntos)
+                        puntos = reparto[1]
+                        return habilidades, puntos
+                    elif num_puntos > puntos:
+                        print('No puedes usar más puntos de los que tienes')
+                        print('Por favor, repita el proceso con una cantidad coherente')
+                    else:
+                        features.borrar_pantalla()
+                        print('Algo ha ido mal, repita el proceso por favor')
+                        continue
+            elif decision_1.lower() == 'n':
+                return habilidades, puntos
+            else:  # Soporte de errores
+                features.borrar_pantalla
+                print('Algo ha ido mal, repita el proceso por favor')
+                continue
 
 
 # Desarrollo
@@ -20,37 +62,5 @@ vida = 20 + (2 * (personaje_habilidades['constitucion'] - 10))
 puntos_habilidades = 3
 
 # Creación del personaje
-run_1 = True
-while run_1:
-    print(f'Tienes {puntos_habilidades} puntos disponibles para tus habilidades (fuerza/destreza/constitución)')
-    decision_1 = input('¿Deseas repartirlos? [s/n]: ')
-    if decision_1.lower() == 's':
-        run_2 = True
-        while run_2:
-            habilidad = input('¿Qué habilidad vas a mejorar? [f/d/c]: ')
-            puntos = int(input('¿Cuántos puntos vas a utilizar?: '))
-            if habilidad.lower() == 'f' and puntos >= 0 and puntos <= puntos_habilidades:
-                reparto = fun_puntos.nuevo_punto(personaje_habilidades, 'fuerza', puntos)
-                personaje_habilidades = reparto[0]
-                puntos_habilidades = reparto[1]
-                run_1, run_2 = False, False
-            elif habilidad.lower() == 'd' and puntos >= 0 and puntos <= puntos_habilidades:
-                reparto = fun_puntos.nuevo_punto(personaje_habilidades, 'destreza', puntos)
-                personaje_habilidades = reparto[0]
-                puntos_habilidades = reparto[1]
-                run_1, run_2 = False, False
-            elif habilidad.lower() == 'c' and puntos >= 0 and puntos <= puntos_habilidades:
-                reparto = fun_puntos.nuevo_punto(personaje_habilidades, 'constitucion', puntos)
-                personaje_habilidades = reparto[0]
-                puntos_habilidades = reparto[1]
-                run_1, run_2 = False, False
-            else:
-                features.borrar_pantalla()
-                print('Algo ha ido mal, repita el proceso por favor')
-                continue
-    elif decision_1.lower() == 'n':
-        run_1 = False
-    else:  # Corrección de posible error
-        features.borrar_pantalla
-        print('Algo ha ido mal, repita el proceso por favor')
-        continue
+cambio = habilidades(personaje_habilidades, puntos_habilidades)
+puntos_habilidades = cambio[1]

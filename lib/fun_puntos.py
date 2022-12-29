@@ -1,5 +1,5 @@
-def nuevo_punto(diccionario, habilidad, puntos):  # False == no existe la habilidad elegida
-    for punto in range(puntos):
+def nuevo_punto(diccionario, habilidad, num_puntos, puntos):
+    for punto in range(num_puntos):
         if habilidad == 'fuerza':
             if diccionario[habilidad] < 14:
                 diccionario[habilidad] += 1
@@ -13,7 +13,4 @@ def nuevo_punto(diccionario, habilidad, puntos):  # False == no existe la habili
         elif habilidad == 'constitucion':
             diccionario[habilidad] += 1
             puntos -= 1
-    if puntos == 0:
-        return diccionario, puntos
-    else:
-        return diccionario, puntos + 1
+    return diccionario, puntos
