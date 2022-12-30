@@ -10,77 +10,44 @@ Ratas = False
 Goblins = False
 Ogro = False
 Estafermo = False
+NoEnemies = True
 turno_player = False
 turno_enemigo = False
+"""
+Explicacion:
+Por cada tipo de enemigo se crea una variable Booleana, al principio cada una de esas variables esta en False
+osea no se activa nada.
+Cuando la situacion lo requiera se elige el enemigo y la variable se cambia a True. Para posteriormente
+llamar a la funcion combate(inv,stats,enemigo) donde en enemigo se introduce el enemigo con la variable en True
+
+Ahí dentro de la funcion principal se comprueba que enemigo es al que nos enfrentamos, entonces una vez
+comprobado la funcion combate llamara a otra (ej: combate_ratas, combate_goblins, etc.) donde se encontrara el
+combate y la logica para cada uno de los enemigos en este primer caso solo lo he probado con el estafermo
+
+Esta el la primera Version de la plantilla para los combates, faltaria que les dieran ustedes el visto bueno,
+para empezar a implementar la logica a los otros enemigos, y ajustar unos pequeños detalles
+"""
 
 
-def combate_estafermo(inventario,player_stats):
-    vida_estafermo = 50000
-    dam_estafermo = 0
-    impacto_estafermo = 0 #Lo que debe sacar para impactar al enemigo
-    golpe_estafermo = 0 #Lo que debe sacar el estafermo para impactar al jugador
-    Combate = True
-    while Combate == True:
-        golpe_player = dados(20)
-        print("Es tu turno Jugador")
-        if golpe_player >= impacto_estafermo:
-            turno_player = True
-        else:
-            print("No has impactado")
-            turno_enemigo = True
 
-
-        while turno_player == True:
-            print("Has impactado")
-            dam_player = (stats_player.get("destreza") - 10) + dados(4)
-            vida_estafermo = vida_estafermo-dam_player
-            if vida_estafermo <= 0:
-                print("El estafermo ha quedado destruido,has terminado el entrenamiento.")
-                Combate,turno_player = False,False
-                break
-            print(f"El Estafermo tiene {vida_estafermo} de vida.")
-            decision = input("¿Quieres seguir luchando?  SI||NO: ")
-            decision = decision.upper()
-            if decision == "NO":
-                print("Bien, has decidido huir has terminado tu sesion de entrenamiento")
-                Combate = False
-                break
-            else:
-                pass
-            turno_player,turno_enemigo = False,True
-
-        while turno_enemigo == True:
-            print("\nEs el turno del Estafermo")
-            impacto_player = 12 + (stats_player.get("destreza")-10)
-            golpe_estafermo = dados(20)
-
-            if golpe_estafermo >= impacto_player:
-                print("El estafermo ha impactado")
-                vida_player = stats_player.get("vida")
-                vida_player = vida_player - dam_estafermo
-                stats_player.update({"vida":vida_player})
-                print(f"El Estafermo te ha hecho {dam_estafermo} punto de daño tienes, {vida_player} puntos de vida")
-                turno_player,turno_enemigo = True,False
-            else:
-                print("El Estafermo no ha impactado")
-                turno_enemigo,turno_player = False,True
-
-
-def combate(inventario, stats_player, enemigo_selec):
-    enemigo = enemigo_selec
-    if enemigo == (Ratas == True):
+def combate(inventario, stats_player, enemigo_selec): #Esta funcion comprueba que combate debe activar
+    enemigo = enemigo_selec #Enemigo es una variable que toma el valor de enemigo_selec
+    if enemigo != NoEnemies:
+        print("No hay un combate disponible")
+    elif enemigo == (Ratas == True): #COmprueba uno por uno el tipo de enemigo
         print("ratas es True")
     elif enemigo == (Goblins == True):
         print("goblins")
     elif enemigo == (Ogro == True):
         print("ogro")
     elif enemigo == (Estafermo == True):
-        print("estaferno")
-        combate_estafermo(inventario,stats_player)
+        print("estafermo") #una vez a encontrado ese enemigo, inicia su funcion de combate, en este caso el estafermo
+        combate_estafermo(inventario,stats_player) #Este tomara las variables del inventario y las estadisticas
 
-Estafermo = False
 
-combate(mochila,stats_player,Estafermo)
+Estafermo = True #Para esta prueba pongo instantanemante antes que estafermo = True para iniciar su combate en concreto
+
+combate(mochila,stats_player,Estafermo) #Llamamos a la funcion del combate
 
 
 
