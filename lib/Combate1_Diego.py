@@ -78,7 +78,7 @@ def combate(inventario, stats_player, enemigo_selec):
         print("estaferno")
         combate_estafermo(inventario,stats_player)
 
-Estafermo = True
+Estafermo = False
 
 combate(mochila,stats_player,Estafermo)
 
