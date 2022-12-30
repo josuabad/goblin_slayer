@@ -1,6 +1,5 @@
 import time
-import features
-
+from lib import features
 
 def nuevo_punto(diccionario, habilidad, num_puntos, puntos):
     for punto in range(num_puntos):
@@ -47,9 +46,13 @@ def habilidades(habilidades, puntos):
                         reparto = nuevo_punto(habilidades, 'constitucion', num_puntos, puntos)
                         puntos = reparto[1]
                         return habilidades, puntos
-                    elif num_puntos > puntos:
-                        print('No puedes usar más puntos de los que tienes')
+                    elif num_puntos > puntos or num_puntos < puntos:
+                        if num_puntos > puntos:
+                            print('No puedes usar más puntos de los que tienes')
+                        else:
+                            pass
                         print('Por favor, repita el proceso con una cantidad coherente')
+                        continue
                     else:
                         features.borrar_pantalla()
                         print('Algo ha ido mal, repita el proceso por favor')

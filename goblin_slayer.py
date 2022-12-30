@@ -13,12 +13,13 @@ print(f'¡Bienvenido {nombre}!')
 
 # Habilidades del personaje
 personaje_habilidades = {'fuerza': 10, 'destreza': 10, 'constitucion': 10}
+personaje = {'daño': 0, 'defensa': 0, 'vida': 0}
 puntos_habilidades = 3
 
 # Creación del personaje
-set_habilidades = config_habilidades.habilidades((personaje_habilidades, puntos_habilidades))
+set_habilidades = config_habilidades.habilidades(personaje_habilidades, puntos_habilidades)
 puntos_habilidades = set_habilidades[1]  # Actualización de los puntos de habilidad restantes
-set_personaje = config_habilidades.especificas_personaje(personaje_habilidades)
-dano = set_personaje[0]
-defensa = set_personaje[1]
-vida = set_personaje[2]
+set_personaje = config_habilidades.especificas_personaje(personaje_habilidades, personaje)
+print(f'Tus características son las siguientes: {personaje}')
+
+# Bucle de configuración del personaje...
