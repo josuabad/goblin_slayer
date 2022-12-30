@@ -1,7 +1,7 @@
 import random
 import features
-# Puedes huir en dos puntos; antes de entrar o dentro de la cueva
-# Si no has entrado en la cueva hay que sacar >= 5 en 20. Si no, >= 10 + numero de enemigos en 20
+
+
 def huir(num, inicio=True):
     dado = random.randint(0, 20)
     if inicio:
