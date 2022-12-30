@@ -1,8 +1,8 @@
 import articulos
 
 
-def extraer(diccionario, from_key, atributo, extrae_valor=True):
-    # Explicación:
+def comparar(diccionario, atributo):
+    # Explicación:      ----    Función que compara los valores del atributo seleccionado
     # diccionario       ----    Diccionario
     # from_key          ----    Cuál es la palabra clave desde dónde buscar
     # atributo          ----    Atributo a buscar de la palabra clave
@@ -10,63 +10,28 @@ def extraer(diccionario, from_key, atributo, extrae_valor=True):
     # Desarrollo:
     lista_keys = list(diccionario.keys())
     lista_values = list(diccionario.values())
-    if extrae_valor:
-        return lista_values[lista_keys.index(from_key)].get(atributo)
-    else:
-        for items, num in zip(lista_keys, range(len(lista_keys))):
-            print(f'- {items} | ({lista_values[num].get(atributo)})')
+    for items, num in zip(lista_keys, range(len(lista_keys))):
+        print(f'- {items} | {lista_values[num].get(atributo)}')
 
 
-def intercambiar(diccionario_emisor, from_key, atributo, valor_de_cambio, diccionario_receptor):  # La función cambia valores (True), pero también puede modificarlos de un diccionario a otro (False)(Ejemplo: de mochila a inventario)
-    # Explicación:
-    # diccionario_emisor       ----    Diccionario de origen
-    # from_key                 ----    Cuál es la palabra clave desde dónde buscar
-    # atributo                 ----    Atributo a buscar de la palabra clave
-    # valor_de_cambio          ----    Nuevo valor a guardar en el diccionario final
-    # diccionario_receptor     ----    Diccionario de destino
-    # Base:
-    # Quiero saber los atributos de un from_key que no se dónde se encuentra.
-    diccionario_emisor_view_keys = list(diccionario_emisor.keys())
-    diccionario_emisor_view_values = list(diccionario_emisor.values())
-    # Tengo que saber dónde está para preguntarle cositas
-    donde_encontrar = diccionario_emisor_view_keys.index(from_key)
-    # Ahora quiero saber los atributos del from_key.
-    donde_buscar = list(diccionario_emisor_view_values[donde_encontrar].keys())
-    # Pero no se donde tengo que cambiar
-    donde_cambiar = donde_buscar.index(atributo)
-    # Y, como los quiero manipular, pongo como una lista los valores que tengo que cambiar
-    que_cambiar = list(diccionario_emisor_view_values[donde_encontrar].values())
-    # Desarrollo:
-    valor_de_origen = extraer(diccionario_emisor, from_key, atributo)
-    if valor_de_cambio == valor_de_origen:
-        diccionario_receptor.update({from_key: {donde_buscar[donde_cambiar]: valor_de_cambio}})
-        donde_buscar.pop(donde_cambiar)
-        que_cambiar.pop(donde_cambiar)
-        for elmnt in donde_buscar:
-            diccionario_receptor[from_key][elmnt] = que_cambiar[donde_buscar.index(elmnt)]
-        diccionario_emisor.pop(from_key)
-        return diccionario_emisor, diccionario_receptor
-    elif valor_de_cambio < valor_de_origen and valor_de_cambio > 0:
-        # 1º Cambiar el atributo           
-        diccionario_receptor.update({from_key: {atributo: valor_de_cambio}})
-        # diccionario_receptor[from_key][atributo] = valor_de_cambio
-        # 2º Pasar el resto de atributos
-        donde_buscar.pop(donde_cambiar)
-        que_cambiar.pop(donde_cambiar)
-        for elmnt in donde_buscar:
-            diccionario_receptor[from_key][elmnt] = que_cambiar[donde_buscar.index(elmnt)]
-        # 3º Borrar el sobrante del anterior
-        diccionario_emisor[from_key][atributo] = valor_de_origen - valor_de_cambio
-        # diccionario_emisor.update({from_key: {atributo: valor_de_origen - valor_de_cambio}})
-        return diccionario_emisor, diccionario_receptor
+def intercambiar(diccionario_1, diccionario_2, elemento, valor):
+    # Explicación   ----    Función que intercambia de un diccionario (1) a otro (2) un elemento. Tengo 3 pociones de vidas (elemento) en el inventario (1) y quiero pasar una (valor) a mi mochila (2)
+    if valor < 0 or valor > diccionario_1[elemento]['cantidad']:
+        return False
+    elif valor == diccionario_1[elemento]['cantidad']:
+        diccionario_1.pop(elemento)
+        diccionario_2[elemento]['cantidad'] += valor
+        return diccionario_1, diccionario_2
     else:
-        return False  # Hay que volver a perdir desde le sistema principal una opción válida
+        diccionario_1[elemento]['cantidad'] -= valor
+        diccionario_2[elemento]['cantidad'] += valor
+        return diccionario_1, diccionario_2
 
 
 def nuevo(diccionario, from_key):
-    # Explicación:
-    # diccionario    ----    Diccionario de origen
-    # from_key       ----    Cuál es la palabra clave desde dónde buscar
+    # Explicación   ----    Función que añade nuevos atributos a un diccionario. Soporta errores de existencias
+    # diccionario   ----    Diccionario de origen
+    # from_key      ----    Cuál es la palabra clave desde dónde buscar
     # Desarrollo
     try:
         diccionario[from_key]
@@ -74,17 +39,17 @@ def nuevo(diccionario, from_key):
         while run:
             alternativa = input('Este artículo ya existe. ¿Quieres añadir una nueva cantidad? [s/n]: ')
             if alternativa.lower() == 's':
-                modificar(diccionario, from_key, 'cantidad', 1, 'suma')
+                diccionario[from_key]['cantidad'] += 1
                 return diccionario
             elif alternativa.lower() == 'n':
-                return False
+                return diccionario
             else:
                 while True:
                     opc = input('Ha habido un error. ¿Quieres repetir o salir? [r/s]: ')
                     if opc.lower() == 'r':
                         break
                     elif opc.lower() == 's':
-                        return False
+                        return diccionario
                     else:
                         continue
     except KeyError:
@@ -93,5 +58,5 @@ def nuevo(diccionario, from_key):
             diccionario.update(articulos.arma(from_key))
         else:  # Única otra opción es que sea poción porque no hay más
             diccionario.update(articulos.pocion(from_key))
-        modificar(diccionario, from_key, 'cantidad', 1)
+        diccionario[from_key]['cantidad'] = 1
         return diccionario
