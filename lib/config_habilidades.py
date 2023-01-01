@@ -19,13 +19,13 @@ def nuevo_punto(diccionario, habilidad, num_puntos, puntos):
     return diccionario, puntos
 
 
-def habilidades(habilidades, puntos):
+def habilidades(habilidad, puntos):
     if puntos == 0:
         print('No tienes puntos de habilidad disponibles')
         print('Sigue jugando para conseguir mejoras y subir de nivel')
         time.sleep(3)
         features.borrar_pantalla()
-        return habilidades, puntos
+        return habilidad, puntos
     else:
         while True:
             print(f'Tienes {puntos} puntos disponibles para tus habilidades (fuerza/destreza/constitución)')
@@ -35,17 +35,17 @@ def habilidades(habilidades, puntos):
                     habilidad = input('¿Qué habilidad vas a mejorar? [f/d/c]: ')
                     num_puntos = int(input('¿Cuántos puntos vas a utilizar?: '))
                     if habilidad.lower() == 'f' and puntos >= 0 and num_puntos <= puntos:
-                        reparto = nuevo_punto(habilidades, 'fuerza', num_puntos, puntos)
+                        reparto = nuevo_punto(habilidad, 'fuerza', num_puntos, puntos)
                         puntos = reparto[1]
-                        return habilidades, puntos
+                        return habilidad, puntos
                     elif habilidad.lower() == 'd' and puntos >= 0 and num_puntos <= puntos:
-                        reparto = nuevo_punto(habilidades, 'destreza', num_puntos, puntos)
+                        reparto = nuevo_punto(habilidad, 'destreza', num_puntos, puntos)
                         puntos = reparto[1]
-                        return habilidades, puntos
+                        return habilidad, puntos
                     elif habilidad.lower() == 'c' and puntos >= 0 and num_puntos <= puntos:
-                        reparto = nuevo_punto(habilidades, 'constitucion', num_puntos, puntos)
+                        reparto = nuevo_punto(habilidad, 'constitucion', num_puntos, puntos)
                         puntos = reparto[1]
-                        return habilidades, puntos
+                        return habilidad, puntos
                     elif num_puntos > puntos or num_puntos < puntos:
                         if num_puntos > puntos:
                             print('No puedes usar más puntos de los que tienes')
@@ -58,18 +58,18 @@ def habilidades(habilidades, puntos):
                         print('Algo ha ido mal, repita el proceso por favor')
                         continue
             elif decision_1.lower() == 'n':
-                return habilidades, puntos
+                return habilidad, puntos
             else:  # Soporte de errores
                 features.borrar_pantalla()
                 print('Algo ha ido mal, repita el proceso por favor')
                 continue
 
 
-def especificas_personaje(habilidades, personaje):
-    dano = habilidades['fuerza'] - 10
+def especificas_personaje(habilidad, personaje):
+    dano = habilidad['fuerza'] - 10
     personaje['daño'] = dano
-    defensa = habilidades['destreza'] - 10
+    defensa = habilidad['destreza'] - 10
     personaje['defensa'] = defensa
-    vida = 20 + (2 * (habilidades['constitucion'] - 10))
+    vida = 20 + (2 * (habilidad['constitucion'] - 10))
     personaje['vida'] = vida
     return personaje
