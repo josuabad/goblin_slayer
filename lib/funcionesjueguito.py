@@ -1,10 +1,10 @@
 import random
 
 Combate = False
-Ratas = False
-Goblins = False
-Ogro = False
-Estafermo = False
+Ratas = 1
+Goblins = 2
+Ogro = 3
+Estafermo = 4
 NoEnemies = 0
 turno_player = False
 turno_enemigo = False
