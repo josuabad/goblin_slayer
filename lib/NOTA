@@ -1,0 +1,6 @@
+Hay que implementar las funciones del combate con las del diccionario
+Y una vez hecho eso cambiar las variables de los enemigos por variables guardadas en un diccionario
+Una vez realizado estos cambios deberemos crear los combates de los demás enemigos (Goblins, Ogro)
+Estas Funciones ademas hay que complementarlas con el entorno en el que se encuetre el personaje, es decir, el mapa ya que dependiendo de la zona en la que se 
+encuentre nuestro jugador se activaran una serie de enemigos que en otras situaciones no requieren que se activen, de este modo podemos optimizar el rendimiento del juego
+arronandonos la creacion de variables que puedan llegar a ser innecesarias
