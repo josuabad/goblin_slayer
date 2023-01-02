@@ -68,7 +68,7 @@ def habilidades(habilidades, puntos):
 def especificas_personaje(habilidades, personaje):
     dano = habilidades['fuerza'] - 10
     personaje['daño'] = dano
-    defensa = habilidades['destreza'] - 10
+    defensa = 12 + (habilidades['constitucion'] - 10)
     personaje['defensa'] = defensa
     vida = 20 + (2 * (habilidades['constitucion'] - 10))
     personaje['vida'] = vida
