@@ -1,25 +1,23 @@
-"""print("Has entrado a las alcantarillas")
+from funcionesjueguito import *
 
-ratas = False
-def alcantarilla(inventario,player_stats): #llamaremos a la primera funcion que es la alcantarilla principal
-    ratas = True #Activamos el identificador del enemigo
-    a = inventario
-    b = player_stats
-    enemigo = ratas
-    def combate(a,b,enemigo):
-        if enemigo == (ratas == True):
-            print("Ratas")
-        else:
-            print("No ratas")
-        
-alcantarilla(12,3)"""
+#Variables globales de prueba Jugador (mochila y stats)
+stats_player = {"vida":22,"destreza":11,"fuerza":11}
+mochila = {"arma":{"puño":0}}
 
-def d(b,c):
-    print(b,c)
+#Variables Globales de los enemigos
+Combate = False
+Ratas = False
+Goblins = False
+Ogro = False
+Estafermo = False
+NoEnemies = True
+turno_player = False
+turno_enemigo = False
 
-def a(b,c):
-    print(b,c)
-    print (d(c,b))
+def alcantarilla(inventario,player_stats):
+    Estafermo = True
+    print("Muy bien Jugador has decidido entrar a las Alcantarillas.")
+    print("Ten cuidado este sitio esta repleto de Ratas Gigantes")
+    combate(inventario,player_stats,Estafermo)
 
-
-a(1,2)
+alcantarilla(mochila,stats_player)

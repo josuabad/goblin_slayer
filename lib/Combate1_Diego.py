@@ -48,7 +48,7 @@ def combate(inventario, stats_player, enemigo_selec): #Esta funcion comprueba qu
 Estafermo = True #Para esta prueba pongo instantanemante antes que estafermo = True para iniciar su combate en concreto
 
 combate(mochila,stats_player,Estafermo) #Llamamos a la funcion del combate
-
+                            
 
 
 

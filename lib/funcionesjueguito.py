@@ -1,5 +1,13 @@
 import random
 
+Combate = False
+Ratas = False
+Goblins = False
+Ogro = False
+Estafermo = False
+NoEnemies = True
+turno_player = False
+turno_enemigo = False
 def dados(n): #La función en resumen crea una lista según el número de caras del dado y de ahi hace un random.choice
     dado_juego = []
     dado = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
@@ -9,6 +17,19 @@ def dados(n): #La función en resumen crea una lista según el número de caras 
 
     res_dado = random.choice(dado_juego)
     return res_dado
+def combate(inventario, stats_player, enemigo_selec): #Esta funcion comprueba que combate debe activar
+    enemigo = enemigo_selec #Enemigo es una variable que toma el valor de enemigo_selec
+    if enemigo != NoEnemies:
+        print("No hay un combate disponible")
+    elif enemigo == (Ratas == True): #COmprueba uno por uno el tipo de enemigo
+        print("ratas es True")
+    elif enemigo == (Goblins == True):
+        print("goblins")
+    elif enemigo == (Ogro == True):
+        print("ogro")
+    elif enemigo == (Estafermo == True):
+        print("estafermo") #una vez a encontrado ese enemigo, inicia su funcion de combate, en este caso el estafermo
+        combate_estafermo(inventario,stats_player) #Este tomara las variables del inventario y las estadisticas
 
 def combate_estafermo(inventario,stats_player):
     vida_estafermo = 50000 #Las variables por comodidad las he puesto así, pero se pondrian igual en un diccionario
