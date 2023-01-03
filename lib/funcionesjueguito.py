@@ -18,12 +18,12 @@ def dados(n): #La función en resumen crea una lista según el número de caras 
     res_dado = random.choice(dado_juego)
     return res_dado
 
-#Funcion general de los COmbates
+#Funcion general de los Combates
 def combate(inventario, stats_player, enemigo_selec): #Esta funcion comprueba que combate debe activar
     enemigo = enemigo_selec #Enemigo es una variable que toma el valor de enemigo_selec
     if enemigo == NoEnemies:
         print("No hay un combate disponible")
-    elif enemigo_selec == 1: #COmprueba uno por uno el tipo de enemigo
+    elif enemigo_selec == 1: #Comprueba uno por uno el tipo de enemigo
         print("ratas es True")
         combate_ratas(inventario,stats_player)
     elif enemigo_selec == 2:
@@ -110,7 +110,7 @@ def combate_ratas(inventario,stats_player):
             if vida_rata <= 0:
                 print("La rata ha muerto")
                 print(f"Has ganado {xp_rata} de experiencia")
-                decision = int(input("\n Quieres intentar huir SI||NO (1/0)"))
+                decision = int(input("\n Quieres intentar huir SI||NO (1/0): "))
                 if decision == 1:
                     int_huida = dados(20)
                     if int_huida >= huida:

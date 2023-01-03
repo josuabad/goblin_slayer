@@ -80,4 +80,6 @@ def taberna(inventario,stats_player):
 
 
 
-taberna(mochila,stats_player)
+#taberna(mochila,stats_player)
+
+alcantarilla(mochila,stats_player,)

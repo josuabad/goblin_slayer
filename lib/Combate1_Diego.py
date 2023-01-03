@@ -55,7 +55,7 @@ def combate(inventario, stats_player, enemigo_selec): #Esta funcion comprueba qu
         combate_estafermo(inventario,stats_player) #Este tomara las variables del inventario y las estadisticas
 
 
-
+combate(mochila,stats_player,4)
 
 
 
