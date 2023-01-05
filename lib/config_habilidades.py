@@ -1,5 +1,5 @@
 import time
-import features
+from lib import features
 
 def nuevo_punto(diccionario, habilidad, num_puntos, puntos):
     for punto in range(num_puntos):

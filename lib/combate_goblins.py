@@ -1,7 +1,8 @@
+import time
 import random
-import config_habilidades
-import features
-import articulos
+from lib import config_habilidades
+from lib import features
+from lib import articulos
 
 
 def huir(num, inicio=True):  # FUNCIONA
@@ -42,17 +43,27 @@ def muerte_goblin(personaje, bolsillo, tipo, num, total=False):  # FUNCIONA
     if tipo == 'espada':
         nuevo = recuperar_extras('espada')
         if nuevo != False:
-            bolsillo.update(nuevo)
+            try:
+                bolsillo['espada goblin']['cantidad'] += 1
+            except KeyError:
+                bolsillo.update(nuevo)
     else:
         nuevo = recuperar_extras('escudo')
         if nuevo != False:
-            bolsillo.update(nuevo)
+            try:
+                bolsillo['escudo goblin']['cantidad'] += 1
+            except KeyError:
+                bolsillo.update(nuevo)
     moneda = monedas()
     if moneda != False:
-        bolsillo.update(moneda)
+        try:
+            bolsillo['monedas'] += moneda
+        except KeyError:
+            bolsillo.update({'monedas': moneda})
     if total:
         bonus = 2 * num
         personaje['experiencia'] += bonus
+        return personaje, bolsillo
     personaje['experiencia'] += 20
     return personaje, bolsillo
 
@@ -108,16 +119,33 @@ def pre_combate(mochila, habilidades, personaje):  # FUNCIONA
 
 def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" es una lista con todos los goblins que hay dentro de la cueva
     # Acción propia del combate entre jugador y goblin espada/escudo
-    goblin_escudo = {'vida': 8, 'daño': 8, 'defensa': 13}  # Características de goblin escudo
-    goblin_espada = {'vida': 8, 'daño': 6, 'defensa': 12}  # Características de goblin espada
+    features.borrar_pantalla()
     conteo_goblins = len(tipo_goblin)  # Número de goblins dentro de la cueva
     for goblin in range(conteo_goblins):
+        goblin_escudo = {'vida': 8, 'daño': 8, 'defensa': 13}  # Características de goblin escudo
+        goblin_espada = {'vida': 8, 'daño': 6, 'defensa': 12}  # Características de goblin espada
         if goblin == 0:  # No puedes huir porque es el primer goblin
             if tipo_goblin[goblin] == 'espada':
+                print(f'El primer enemigo es un goblin con espada. Tiene {goblin_espada["vida"]} puntos de vida')
+                continuar = input('Presiona ENTER para continuar... ')
                 while goblin_espada['vida'] > 0 or personaje['vida'] > 0:  # Mientras que ninguno de los 2 muera...
                     # Intenta atacar el jugador
                     is_impacto_jugador = random.randint(0, 20)
-                    if is_impacto_jugador >= goblin_espada['defensa']:  # Consigue el ataque
+                    if goblin_espada['vida'] <= 0:
+                        conteo_goblins -= 1  # Goblin muerto, uno menos
+                        print(f'¡Enhorabuena, has acabado con un goblin con espada! Faltan {conteo_goblins}')
+                        continuar = input('Presiona ENTER para continuar... ')
+                        # Loot de goblin muerto
+                        actualizacion_resultados = combate_goblins.muerte_goblin(personaje, bolsillo, 'espada', conteo_goblins)
+                        break
+                    elif personaje['vida'] <= 0:
+                            features.borrar_pantalla()
+                            print('Te has muerto')
+                            time.sleep(2)
+                            exit()
+                    elif is_impacto_jugador >= goblin_espada['defensa']:  # Consigue el ataque
+                        time.sleep(2)
+                        print('¡Perfecto! Has conseguido impactar')
                         for item in equipo:  # Identificar el arma que va a usar
                             try:
                                 equipo[item]['arma']
@@ -125,46 +153,90 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                                 goblin_espada['vida'] -= impacto_final
                             except KeyError:  # Si al principio se encuentra con el escudo, vuelve a verificar cuál es el arma
                                 pass
-                        if goblin_espada['vida'] <= 0:
-                            conteo_goblins -= 1  # Goblin muerto, uno menos
-                            print(f'¡Enhorabuena, has acabado con un goblin con espada! Faltan {conteo_goblins}')
+                        print(f'Has causado un daño de -{impacto_final}')
+                        time.sleep(2)
+                        features.borrar_pantalla()
+                        print(f'Vidas:')
+                        print(f'Goblin: {goblin_espada["vida"]}')
+                        print(f'Personaje (tú): {personaje["vida"]}')
+                        continuar = input('Presiona ENTER para continuar... ')
                     else:  # Ataque goblin espada
+                        print(f'No has podido atacar, has sacado un {is_impacto_jugador}')
                         is_impacto_goblin = random.randint(0, 20)
-                        if is_impacto_goblin >= personaje['defensa']:  # Consigue el ataque
+                        if is_impacto_goblin >= personaje['defensa'] or is_impacto_goblin == 20:  # Consigue el ataque
                             impacto_final = random.randint(1, goblin_espada['daño'])
                             personaje['vida'] -= impacto_final
+                            print('¡Prepárate! El goblin te va a atacar')
+                            time.sleep(1)
+                            print(f'Te ha causado un daño de -{impacto_final}')
+                            features.borrar_pantalla()
+                            print(f'Vidas:')
+                            print(f'Goblin: {goblin_espada["vida"]}')
+                            print(f'Personaje (tú): {personaje["vida"]}')
+                            continuar = input('Presiona ENTER para continuar... ')
                         else:
                             print('¡Has tenido suerte, no ha conseguido impactarte!')
-                        if personaje['vida'] <= 0:
                             features.borrar_pantalla()
-                            print('Te has muerto')
-                            exit()
+                            print(f'Vidas:')
+                            print(f'Goblin: {goblin_espada["vida"]}')
+                            print(f'Personaje (tú): {personaje["vida"]}')
+                            continuar = input('Presiona ENTER para continuar... ')
             else:
+                print(f'El primer enemigo es un goblin con escudo. Tiene {goblin_escudo["vida"]} puntos de vida')
+                continuar = input('Presiona ENTER para continuar... ')
                 while goblin_escudo['vida'] > 0 or personaje['vida'] > 0:  # Mientras que ninguno de los 2 muera...
                     # Intenta atacar el jugador
                     is_impacto_jugador = random.randint(0, 20)
-                    if is_impacto_jugador >= goblin_escudo['defensa']:  # Consigue el ataque
+                    if goblin_escudo['vida'] <= 0:
+                        conteo_goblins -= 1  # Goblin muerto, uno menos
+                        print(f'¡Enhorabuena, has acabado con un goblin con escudo! Faltan {conteo_goblins}')
+                        continuar = input('Presiona ENTER para continuar... ')
+                        # Loot de goblin muerto
+                        actualizacion_resultados = combate_goblins.muerte_goblin(personaje, bolsillo, 'escudo', conteo_goblins)
+                        break
+                    elif personaje['vida'] <= 0:
+                            features.borrar_pantalla()
+                            print('Te has muerto')
+                            time.sleep(2)
+                            exit()
+                    elif is_impacto_jugador >= goblin_escudo['defensa']:  # Consigue el ataque
+                        time.sleep(2)
+                        print('¡Perfecto! Has conseguido impactar')
                         for item in equipo:  # Identificar el arma que va a usar
                             try:
                                 equipo[item]['arma']
                                 impacto_final = random.randint(1, equipo[item]['daño']) + personaje['daño']
-                                goblin_espada['vida'] -= impacto_final
+                                goblin_escudo['vida'] -= impacto_final
                             except KeyError:  # Si al principio se encuentra con el escudo, vuelve a verificar cuál es el arma
                                 pass
-                        if goblin_espada['vida'] <= 0:
-                            conteo_goblins -= 1  # Goblin muerto, uno menos
-                            print(f'¡Enhorabuena, has acabado con un goblin con escudo! Faltan {conteo_goblins}')
+                        print(f'Has causado un daño de -{impacto_final}')
+                        time.sleep(2)
+                        features.borrar_pantalla()
+                        print(f'Vidas:')
+                        print(f'Goblin: {goblin_escudo["vida"]}')
+                        print(f'Personaje (tú): {personaje["vida"]}')
+                        continuar = input('Presiona ENTER para continuar... ')
                     else:  # Ataque goblin escudo
+                        print(f'No has podido atacar, has sacado un {is_impacto_jugador}')
                         is_impacto_goblin = random.randint(0, 20)
-                        if is_impacto_goblin >= personaje['defensa']:  # Consigue el ataque
+                        if is_impacto_goblin >= personaje['defensa'] or is_impacto_goblin == 20:  # Consigue el ataque
                             impacto_final = random.randint(1, goblin_escudo['daño'])
                             personaje['vida'] -= impacto_final
+                            print('¡Prepárate! El goblin te va a atacar')
+                            time.sleep(1)
+                            print(f'Te ha causado un daño de -{impacto_final}')
+                            features.borrar_pantalla()
+                            print(f'Vidas:')
+                            print(f'Goblin: {goblin_escudo["vida"]}')
+                            print(f'Personaje (tú): {personaje["vida"]}')
+                            continuar = input('Presiona ENTER para continuar... ')
                         else:
                             print('¡Has tenido suerte, no ha conseguido impactarte!')
-                        if personaje['vida'] <= 0:
                             features.borrar_pantalla()
-                            print('Te has muerto')
-                            exit()
+                            print(f'Vidas:')
+                            print(f'Goblin: {goblin_espada["vida"]}')
+                            print(f'Personaje (tú): {personaje["vida"]}')
+                            continuar = input('Presiona ENTER para continuar... ')
         else:  # Puedes huir
             while True:  # Oportunidad de huir. Solo 1 vez por cada goblin
                 oportunidad_huir = input('Puedes probar a huir, ¿lo intentas? [s/n]: ')
@@ -181,10 +253,26 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                     print('Algo ha ido mal, repita el proceso por favor')
                     continue
             if tipo_goblin[goblin] == 'espada':
+                print(f'El siguiente enemigo es un goblin con espada. Tiene {goblin_espada["vida"]} puntos de vida')
+                continuar = input('Presiona ENTER para continuar... ')
                 while goblin_espada['vida'] > 0 or personaje['vida'] > 0:  # Mientras que ninguno de los 2 muera...
                     # Intenta atacar el jugador
                     is_impacto_jugador = random.randint(0, 20)
-                    if is_impacto_jugador >= goblin_espada['defensa']:  # Consigue el ataque
+                    if goblin_espada['vida'] <= 0:
+                        conteo_goblins -= 1  # Goblin muerto, uno menos
+                        print(f'¡Enhorabuena, has acabado con un goblin con espada! Faltan {conteo_goblins}')
+                        continuar = input('Presiona ENTER para continuar... ')
+                        # Loot de goblin muerto
+                        actualizacion_resultados = combate_goblins.muerte_goblin(personaje, bolsillo, 'espada', conteo_goblins)
+                        break
+                    elif personaje['vida'] <= 0:
+                            features.borrar_pantalla()
+                            print('Te has muerto')
+                            time.sleep(2)
+                            exit()
+                    elif is_impacto_jugador >= goblin_espada['defensa']:  # Consigue el ataque
+                        time.sleep(2)
+                        print('¡Perfecto! Has conseguido impactar')
                         for item in equipo:  # Identificar el arma que va a usar
                             try:
                                 equipo[item]['arma']
@@ -192,49 +280,96 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                                 goblin_espada['vida'] -= impacto_final
                             except KeyError:  # Si al principio se encuentra con el escudo, vuelve a verificar cuál es el arma
                                 pass
-                        if goblin_espada['vida'] <= 0:
-                            conteo_goblins -= 1  # Goblin muerto, uno menos
-                            print(f'¡Enhorabuena, has acabado con un goblin con espada! Faltan {conteo_goblins}')
+                        print(f'Has causado un daño de -{impacto_final}')
+                        time.sleep(2)
+                        features.borrar_pantalla()
+                        print(f'Vidas:')
+                        print(f'Goblin: {goblin_espada["vida"]}')
+                        print(f'Personaje (tú): {personaje["vida"]}')
+                        continuar = input('Presiona ENTER para continuar... ')
                     else:  # Ataque goblin espada
+                        print(f'No has podido atacar, has sacado un {is_impacto_jugador}')
                         is_impacto_goblin = random.randint(0, 20)
-                        if is_impacto_goblin >= personaje['defensa']:  # Consigue el ataque
+                        if is_impacto_goblin >= personaje['defensa'] or is_impacto_goblin == 20:  # Consigue el ataque
                             impacto_final = random.randint(1, goblin_espada['daño'])
                             personaje['vida'] -= impacto_final
+                            print('¡Prepárate! El goblin te va a atacar')
+                            time.sleep(1)
+                            print(f'Te ha causado un daño de -{impacto_final}')
+                            features.borrar_pantalla()
+                            print(f'Vidas:')
+                            print(f'Goblin: {goblin_espada["vida"]}')
+                            print(f'Personaje (tú): {personaje["vida"]}')
+                            continuar = input('Presiona ENTER para continuar... ')
                         else:
                             print('¡Has tenido suerte, no ha conseguido impactarte!')
-                        if personaje['vida'] <= 0:
                             features.borrar_pantalla()
-                            print('Te has muerto')
-                            exit()
+                            print(f'Vidas:')
+                            print(f'Goblin: {goblin_espada["vida"]}')
+                            print(f'Personaje (tú): {personaje["vida"]}')
+                            continuar = input('Presiona ENTER para continuar... ')
             else:
+                print(f'El primer enemigo es un goblin con escudo. Tiene {goblin_escudo["vida"]} puntos de vida')
+                continuar = input('Presiona ENTER para continuar... ')
                 while goblin_escudo['vida'] > 0 or personaje['vida'] > 0:  # Mientras que ninguno de los 2 muera...
                     # Intenta atacar el jugador
                     is_impacto_jugador = random.randint(0, 20)
-                    if is_impacto_jugador >= goblin_escudo['defensa']:  # Consigue el ataque
+                    if goblin_escudo['vida'] <= 0:
+                        conteo_goblins -= 1  # Goblin muerto, uno menos
+                        print(f'¡Enhorabuena, has acabado con un goblin con escudo! Faltan {conteo_goblins}')
+                        continuar = input('Presiona ENTER para continuar... ')
+                        # Loot de goblin muerto
+                        actualizacion_resultados = combate_goblins.muerte_goblin(personaje, bolsillo, 'escudo', conteo_goblins)
+                        break
+                    elif personaje['vida'] <= 0:
+                            features.borrar_pantalla()
+                            print('Te has muerto')
+                            time.sleep(2)
+                            exit()
+                    elif is_impacto_jugador >= goblin_escudo['defensa']:  # Consigue el ataque
+                        time.sleep(2)
+                        print('¡Perfecto! Has conseguido impactar')
                         for item in equipo:  # Identificar el arma que va a usar
                             try:
                                 equipo[item]['arma']
                                 impacto_final = random.randint(1, equipo[item]['daño']) + personaje['daño']
-                                goblin_espada['vida'] -= impacto_final
+                                goblin_escudo['vida'] -= impacto_final
                             except KeyError:  # Si al principio se encuentra con el escudo, vuelve a verificar cuál es el arma
                                 pass
-                        if goblin_espada['vida'] <= 0:
-                            conteo_goblins -= 1  # Goblin muerto, uno menos
-                            print(f'¡Enhorabuena, has acabado con un goblin con escudo! Faltan {conteo_goblins}')
+                        print(f'Has causado un daño de -{impacto_final}')
+                        time.sleep(2)
+                        features.borrar_pantalla()
+                        print(f'Vidas:')
+                        print(f'Goblin: {goblin_escudo["vida"]}')
+                        print(f'Personaje (tú): {personaje["vida"]}')
+                        continuar = input('Presiona ENTER para continuar... ')
                     else:  # Ataque goblin escudo
+                        print(f'No has podido atacar, has sacado un {is_impacto_jugador}')
                         is_impacto_goblin = random.randint(0, 20)
-                        if is_impacto_goblin >= personaje['defensa']:  # Consigue el ataque
+                        if is_impacto_goblin >= personaje['defensa'] or is_impacto_goblin == 20:  # Consigue el ataque
                             impacto_final = random.randint(1, goblin_escudo['daño'])
                             personaje['vida'] -= impacto_final
+                            print('¡Prepárate! El goblin te va a atacar')
+                            time.sleep(1)
+                            print(f'Te ha causado un daño de -{impacto_final}')
+                            features.borrar_pantalla()
+                            print(f'Vidas:')
+                            print(f'Goblin: {goblin_escudo["vida"]}')
+                            print(f'Personaje (tú): {personaje["vida"]}')
+                            continuar = input('Presiona ENTER para continuar... ')
                         else:
                             print('¡Has tenido suerte, no ha conseguido impactarte!')
-                        if personaje['vida'] <= 0:
                             features.borrar_pantalla()
-                            print('Te has muerto')
-                            exit()
+                            print(f'Vidas:')
+                            print(f'Goblin: {goblin_espada["vida"]}')
+                            print(f'Personaje (tú): {personaje["vida"]}')
+                            continuar = input('Presiona ENTER para continuar... ')
+    print('¡Has acabado con todos los goblins de la cueva!')
+    actualizacion_resultados = muerte_goblin(personaje, bolsillo, 'escudo', conteo_goblins, True)
+    return bolsillo, personaje
 
 
-def combate_goblins(personaje, mochila):
+def combate_goblins(personaje, habilidades, mochila, bolsillo):
     # Generar enemigos (num y clase)
     features.borrar_pantalla()
     num_enemigos = random.randint(1, 6)
@@ -270,3 +405,5 @@ def combate_goblins(personaje, mochila):
             print('Algo ha ido mal, repita el proceso por favor')
             continue
     # Combate
+    preparacion = pre_combate(mochila, habilidades, personaje)
+    pelea = combate(personaje, preparacion[0], bolsillo, clase_enemigo)
