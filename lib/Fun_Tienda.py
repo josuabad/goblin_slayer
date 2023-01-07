@@ -129,7 +129,6 @@ def Fun_Tienda(mochila):
         elif numero_tienda_lista == 4:  # Si la variable es igual a 4 es porque escogiste salir.
             print("Hasta pronto, espero verlo de nuevo\n")  # Despedida.
             time.sleep(1)
-            from Fun_Mapa import Fun_mapa  # Aquí ya sales del bucle (Tienda) y vuelves al mapa
 
         else:
             print("No tenemos eso en la tienda, ¡vuelva a introducir un número válido!\n")  # Esto es por si el jugador
