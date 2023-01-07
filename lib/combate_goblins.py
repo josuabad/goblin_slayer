@@ -120,6 +120,7 @@ def pre_combate(mochila, habilidades, personaje):  # FUNCIONA
 def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" es una lista con todos los goblins que hay dentro de la cueva
     # Acción propia del combate entre jugador y goblin espada/escudo
     features.borrar_pantalla()
+    print('¡Acabas de entrar en la cueva!')
     conteo_goblins = len(tipo_goblin)  # Número de goblins dentro de la cueva
     for goblin in range(conteo_goblins):
         goblin_escudo = {'vida': 8, 'daño': 8, 'defensa': 13}  # Características de goblin escudo
@@ -135,9 +136,8 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                         conteo_goblins -= 1  # Goblin muerto, uno menos
                         print(f'¡Enhorabuena, has acabado con un goblin con espada! Faltan {conteo_goblins}')
                         continuar = input('Presiona ENTER para continuar... ')
-                        # Loot de goblin muerto
-                        actualizacion_resultados = combate_goblins.muerte_goblin(personaje, bolsillo, 'espada', conteo_goblins)
-                        break
+                        actualizacion_resultados = muerte_goblin(personaje, bolsillo, 'espada', conteo_goblins)
+                        break  # Termina después de regresar el loot correspondiente
                     elif personaje['vida'] <= 0:
                             features.borrar_pantalla()
                             print('Te has muerto')
@@ -192,7 +192,7 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                         print(f'¡Enhorabuena, has acabado con un goblin con escudo! Faltan {conteo_goblins}')
                         continuar = input('Presiona ENTER para continuar... ')
                         # Loot de goblin muerto
-                        actualizacion_resultados = combate_goblins.muerte_goblin(personaje, bolsillo, 'escudo', conteo_goblins)
+                        actualizacion_resultados = muerte_goblin(personaje, bolsillo, 'escudo', conteo_goblins)
                         break
                     elif personaje['vida'] <= 0:
                             features.borrar_pantalla()
@@ -241,7 +241,7 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
             while True:  # Oportunidad de huir. Solo 1 vez por cada goblin
                 oportunidad_huir = input('Puedes probar a huir, ¿lo intentas? [s/n]: ')
                 if oportunidad_huir.lower() == 's':
-                    no_combate = combate_goblins.huir(len(tipo_goblin), False)
+                    no_combate = huir(len(tipo_goblin), False)
                     if no_combate:
                         return personaje, equipo, bolsillo, tipo_goblin  # Puedes huir
                     else:
@@ -263,7 +263,7 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                         print(f'¡Enhorabuena, has acabado con un goblin con espada! Faltan {conteo_goblins}')
                         continuar = input('Presiona ENTER para continuar... ')
                         # Loot de goblin muerto
-                        actualizacion_resultados = combate_goblins.muerte_goblin(personaje, bolsillo, 'espada', conteo_goblins)
+                        actualizacion_resultados = muerte_goblin(personaje, bolsillo, 'espada', conteo_goblins)
                         break
                     elif personaje['vida'] <= 0:
                             features.borrar_pantalla()
@@ -319,7 +319,7 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                         print(f'¡Enhorabuena, has acabado con un goblin con escudo! Faltan {conteo_goblins}')
                         continuar = input('Presiona ENTER para continuar... ')
                         # Loot de goblin muerto
-                        actualizacion_resultados = combate_goblins.muerte_goblin(personaje, bolsillo, 'escudo', conteo_goblins)
+                        actualizacion_resultados = muerte_goblin(personaje, bolsillo, 'escudo', conteo_goblins)
                         break
                     elif personaje['vida'] <= 0:
                             features.borrar_pantalla()
@@ -369,7 +369,7 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
     return bolsillo, personaje
 
 
-def combate_goblins(personaje, habilidades, mochila, bolsillo):
+def combate_goblin(personaje, habilidades, mochila, bolsillo):
     # Generar enemigos (num y clase)
     features.borrar_pantalla()
     num_enemigos = random.randint(1, 6)
@@ -386,17 +386,17 @@ def combate_goblins(personaje, habilidades, mochila, bolsillo):
     num_escudo = clase_enemigo.count('escudo')
     num_espada = clase_enemigo.count('espada')
     if num_escudo < num_enemigos or num_espada < num_enemigos:
-        print('-----  Total  -----')
+        print('\n-----  Total  -----')
         print(f'Goblins con espada: {num_espada}')
-        print(f'Goblins con escudo: {num_escudo}')
+        print(f'Goblins con escudo: {num_escudo}\n')
     # Oportunidad de huir antes del combate
     while True:
-        lucha = input('¿Quieres huir antes de entrar en combate? [s/n]: ')
         print('Ten en cuenta que una vez dentro, solo vas a poder tratar de huir 1 vez por goblin')
+        lucha = input('¿Quieres huir antes de entrar en combate? [s/n]: ')
         if lucha.lower() == 's':
             salida = huir(num_enemigos)
             if salida:
-                return personaje, mochila
+                return personaje, habilidades, mochila, bolsillo
             else:
                 break
         elif lucha.lower() == 'n':
@@ -407,3 +407,4 @@ def combate_goblins(personaje, habilidades, mochila, bolsillo):
     # Combate
     preparacion = pre_combate(mochila, habilidades, personaje)
     pelea = combate(personaje, preparacion[0], bolsillo, clase_enemigo)
+    return personaje, habilidades, mochila, bolsillo
