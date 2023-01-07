@@ -14,6 +14,3 @@ def extraer(diccionario, from_key, extrae_value_key, extrae_valor=True):
 
 inventario = {'arma':{'puño':0},'pociones':{'poc_salud':2},'armadura':0,'armas':{'espada':2,'hacha':4},'armaduras':{}}
 
-
-x = extraer(inventario,'arma','puño')
-print(x)

@@ -55,14 +55,14 @@ def EasterEgg(inventario,stats_player,variable): #Se introduce la variable boole
         print("Vaya parece que el camino esta bloqueado")
 
 
-localizacion = int(input("A donde quieres ir 1) Cueva  2) Pueblo 3) Cuevas 4) Ogro.  Elige: "))
+"""localizacion = int(input("A donde quieres ir 1) Cueva  2) Pueblo 3) Cuevas 4) Ogro.  Elige: "))
 
 if localizacion == 5:
     print("Eyy... eso no esta en el mapa")
     EasterEgg(mochila,stats_player,easterEgg)
 else:
     print("Vale vas a ir a esa ubicacion.")
-
+"""
 
 """a = mochila.get("arma")
 print(a)
