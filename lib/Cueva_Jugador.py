@@ -64,15 +64,42 @@ def cueva_jugador(inventario,stats_player):
             print(f"Actualmente estos son tus objetos en el armario: {armario}")
 
             while armario_est == True:
-                objeto_guardar = input(f"A que menu quieres acceder {mochila.keys()}, \n Elige: ")
+                objeto_guardar = input(f"A que menu quieres acceder {inventario.keys()}, \n Elige: ")
 
                 if objeto_guardar == "Armas":
-                    print(f"Estas son tus armas: {mochila['Armas']}")
+                    print(f"Estas son tus armas: {inventario['Armas']}")
                     objeto_guardar = input("Que objeto quieres guardar: ")
-                    armario.update(objeto_guardar)
-                    print(armario)
+                    if objeto_guardar not in armario and objeto_guardar in inventario["Armas"]:
+                        contador_objetos = 0
+                        armario.update({objeto_guardar:contador_objetos+1})
+                        #inventario.update({"Armas":inventario.get(objeto_guardar) - 1})
+                        print(armario)
+                    elif objeto_guardar in armario:
+                        contador_objetos = armario.get(objeto_guardar)
+                        armario.update({objeto_guardar: contador_objetos + 1})
+                        #inventario.update({"Armas": inventario.get(objeto_guardar) - 1})
+                        print(armario)
+                    else:
+                        print("El objeto introducido no existe")
+                        continue
 
-                elif objeto_guardar == "Objetos":
+
+                elif objeto_guardar == "objetos":
+                    print(f"Estas son tus objetos: {inventario['objetos']}")
+                    objeto_guardar = input("Que objeto quieres guardar: ")
+                    if objeto_guardar not in armario and objeto_guardar in inventario["objetos"]:
+                        contador_objetos = 0
+                        armario.update({objeto_guardar: contador_objetos + 1})
+                        # inventario.update({"Armas":inventario.get(objeto_guardar) - 1})
+                        print(armario)
+                    elif objeto_guardar in armario:
+                        contador_objetos = armario.get(objeto_guardar)
+                        armario.update({objeto_guardar: contador_objetos + 1})
+                        # inventario.update({"Armas": inventario.get(objeto_guardar) - 1})
+                        print(armario)
+                    else:
+                        print("El objeto introducido no existe")
+                        continue
                     continue
 
                 else:
@@ -93,3 +120,16 @@ def cueva_jugador(inventario,stats_player):
 
 
 cueva_jugador(mochila,stats_player)
+
+
+#print(mochila)
+"""a = mochila.get("Armas")
+print(a)
+
+v = "espada"
+res = a.get(v) -1
+a.update()
+
+mochila.update({"Armas": mochila.get("Armas") - 1})
+print(mochila)
+"""
