@@ -1,11 +1,15 @@
+# Modulos
 import time
 import random
-from lib import config_habilidades
 from lib import features
 from lib import articulos
+from lib import config_habilidades
 
 
-def huir(num, inicio=True):  # FUNCIONA
+# Funciones
+def huir(num, inicio=True):
+    # Teniendo en cuenta el numero de goblins y el momento del combate, indica si puedes huir o no
+    # Devuelve True o False
     dado = random.randint(0, 20)
     if inicio:
         if dado >= 5:
@@ -19,7 +23,9 @@ def huir(num, inicio=True):  # FUNCIONA
             return False
 
 
-def monedas():  # FUNCIONA
+def monedas():
+    # Calcula la posibilidad de recoger monedas
+    # Devuelve la cantidad de monedas o False si no hubo posibilidad
     is_moneda = random.randint(1, 10)
     if is_moneda >= 4:
         cantidad = random.randint(1, 6)
@@ -28,7 +34,9 @@ def monedas():  # FUNCIONA
         return False
 
 
-def recuperar_extras(goblin):  # FUNCIONA
+def recuperar_extras(goblin):
+    # Teniendo en cuenta el tipo de goblin, calcula la posibilidad de recoger alguna recompensa suelta después de haber sido eliminado
+    # Devuelve la recompensa recogida o False si no hubo posibilidad
     is_recuperar = random.randint(1, 10)
     if is_recuperar >= 4:
         if goblin == 'espada':
@@ -39,7 +47,9 @@ def recuperar_extras(goblin):  # FUNCIONA
         return False
 
 
-def muerte_goblin(personaje, bolsillo, tipo, num, total=False):  # FUNCIONA
+def muerte_goblin(personaje, bolsillo, tipo, num, total=False):
+    # En el caso de que muera un goblin, toma las variables del personaje, su bolsillo, el tipo de goblin eliminado, el numero de goblins en la cueva y el si ya no quedan goblins
+    # Devuelve las variables personaje con su correspondiente aumento de exp, y el bolsillo que guarda las recompensas al igual que las monedas recogidas
     if tipo == 'espada':
         nuevo = recuperar_extras('espada')
         if nuevo != False:
@@ -68,10 +78,12 @@ def muerte_goblin(personaje, bolsillo, tipo, num, total=False):  # FUNCIONA
     return personaje, bolsillo
 
 
-def pre_combate(mochila, habilidades, personaje):  # FUNCIONA
-    # Equipar el arma y escudo que el jugador quiera o pueda para antes de los combates
+def pre_combate(mochila, habilidades, personaje):
+    # Equipa el arma y escudo que el jugador quiera y pueda para antes de los combates
+    # Además de añadir todas las pociones que tenga el personaje en la mochila
     armas = []
     escudos = []
+    pociones = 0
     en_uso = {}
     manos = 2
     num = 0
@@ -84,7 +96,11 @@ def pre_combate(mochila, habilidades, personaje):  # FUNCIONA
             print(f'  {num}. {item} | {num_manos} manos')
             armas.append(item)
         except KeyError:
-            escudos.append(item)
+            try:
+                mochila[item]['protección']
+                escudos.append(item)
+            except KeyError:
+                pociones = mochila[item]['cantidad']
     while True:  # Saber que arma coger y si me quedan las manos libres para usar mi escudo
         arma_eleccion = int(input('Introduce el número del arma que quieres coger: '))
         if arma_eleccion < 1 or arma_eleccion > len(armas) or type(arma_eleccion) != int:
@@ -114,6 +130,9 @@ def pre_combate(mochila, habilidades, personaje):  # FUNCIONA
                 continue
         else:
             break  # Comienza el combate
+    if pociones > 0:
+        en_uso.update(articulos.pocion('pocion de vida'))
+        en_uso['pocion de vida']['cantidad'] = pociones
     return en_uso, habilidades, personaje  # Variable "en_uso" hay que recogerla porque son los artículos equipados en el momento
 
 
@@ -122,6 +141,7 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
     features.borrar_pantalla()
     print('¡Acabas de entrar en la cueva!')
     conteo_goblins = len(tipo_goblin)  # Número de goblins dentro de la cueva
+    is_pocion = 0
     for goblin in range(conteo_goblins):
         goblin_escudo = {'vida': 8, 'daño': 8, 'defensa': 13}  # Características de goblin escudo
         goblin_espada = {'vida': 8, 'daño': 6, 'defensa': 12}  # Características de goblin espada
@@ -152,7 +172,11 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                                 impacto_final = random.randint(1, equipo[item]['daño']) + personaje['daño']
                                 goblin_espada['vida'] -= impacto_final
                             except KeyError:  # Si al principio se encuentra con el escudo, vuelve a verificar cuál es el arma
-                                pass
+                                try:
+                                    equipo[item]['pocion']
+                                    is_pocion = equipo[item]['cantidad']
+                                except KeyError:
+                                    pass
                         print(f'Has causado un daño de -{impacto_final}')
                         time.sleep(2)
                         features.borrar_pantalla()
@@ -181,6 +205,25 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                             print(f'Goblin: {goblin_espada["vida"]}')
                             print(f'Personaje (tú): {personaje["vida"]}')
                             continuar = input('Presiona ENTER para continuar... ')
+                    if is_pocion > 0:
+                        while True:
+                            print(f'Tienes {is_pocion} pociones para recuperar vida')
+                            usar_pocion = input('¿Quieres equiparte alguna? [s/n]: ')
+                            if usar_pocion.lower() == 's':
+                                num_pocion = int(input('¿Cuántas quieres usar?: '))
+                                if 0 < num_pocion <= is_pocion:
+                                    pass
+                                elif num_pocion == 0:
+                                    pass
+                                else:
+                                    pass
+                            elif usar_pocion.lower() == 'n':
+                                features.borrar_pantalla()
+                                break
+                            else:
+                                features.borrar_pantalla()
+                                print('Algo ha ido mal, repita el proceso por favor')
+                                continue
             else:
                 print(f'El primer enemigo es un goblin con escudo. Tiene {goblin_escudo["vida"]} puntos de vida')
                 continuar = input('Presiona ENTER para continuar... ')
