@@ -1,10 +1,13 @@
 import time
-import articulos
+# import artículos
 import config_habilidades
 
 
 def fun_tienda(mochila, bolsa):  # Fun_Tienda()
-    print("¡Bienvenido a la tienda jugador!\n¿Qué te gustaría comprar?")  # La bienvenida a la tienda.
+    print("=======================================")
+    print("¡Bienvenido a la tienda jugador!\n=======================================")  # La bienvenida a la tienda.
+    print("¿Qué te gustaría comprar?\n")
+    time.sleep(0.5)
     while True:  # Bucle para que esté dentro de la tienda hasta que quiera SALIR.
         tienda = [['(EM) Espada Mágica', '(E) Espada', '(H2) Hacha dos manos'],
                   ['(S) Escudo', '(A1) Armadura nivel 1', '(A2) Armadura nivel 2', '(A3) Armadura nivel 3'],
@@ -33,6 +36,7 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                         mochila['espada magica']['cantidad'] += 1
                         # Le suma 1 al valor de la clave del diccionario
                         print("¡Gracias por tu compra, aquí tiene su espada mágica!")  # Agradecimiento
+                        input('Presiona ENTER para continuar...')
                         print(f"--> Actualmente tienes: {mochila['espada magica']['cantidad']} Espadas Mágicas")
                         # Indica la cantidad que hay en la mochila de ese objeto
                         print(f"--> Te quedan: {mochila.get('monedas')} Monedas")
@@ -41,6 +45,7 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                     else:  # Si no tiene las 200 monedas.
                         print(f'Vaya parece que no tienes suficientes monedas.\nDispones de {mochila.get("monedas")} .'
                               f'\nVuelve cuando tengas las 200. ¡Hasta pronto!')
+                        time.sleep(0.8)
                         continue  # Lo devuelve a la tienda
                 elif numero_de_compra == 2:
                     print("\nVale, ¿desea comprar otra cosa?\n")
@@ -59,12 +64,14 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                         mochila.update({"monedas": mochila.get("monedas") - 10})
                         mochila['espada']['cantidad'] += 1
                         print("¡Gracias por tu compra, aquí tiene su espada!")  # Agradecimiento
+                        input('Presiona ENTER para continuar...')
                         print(f"--> Actualmente tienes: {mochila['espada']['cantidad']} Espadas")
                         print(f"--> Te quedan: {mochila.get('monedas')} Monedas")
                         continue
                     else:  # Si no tiene las 200 monedas.
                         print(f'Vaya parece que no tienes suficientes monedas.\nDispones de {mochila.get("monedas")} .'
                               f'\nVuelve cuando tengas las 10 monedas. ¡Hasta pronto!')
+                        time.sleep(0.8)
                         continue  # Lo devuelve a la tienda
                 elif numero_de_compra == 2:
                     print("\nVale, ¿desea comprar otra cosa?\n")
@@ -84,12 +91,14 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                         mochila.update({"monedas": mochila.get("monedas") - 30})
                         mochila['hacha dos manos']['cantidad'] += 1
                         print("¡Gracias por tu compra, aquí tiene su hacha de dos manos!")  # Agradecimiento
+                        input('Presiona ENTER para continuar...')
                         print(f'--> Actualmente tienes: {mochila["hacha dos manos"]["cantidad"]} hacha de dos manos')
                         print(f"--> Te quedan: {mochila.get('monedas')} Monedas")
                         continue
                     else:  # Si no tiene las 200 monedas.
                         print(f'Vaya parece que no tienes suficientes monedas.\nDispones de {mochila.get("monedas")} .'
                               f'\nVuelve cuando tengas las 30 monedas. ¡Hasta pronto!')
+                        time.sleep(0.8)
                         continue  # Lo devuelve a la tienda
                 elif numero_de_compra == 2:
                     print("\nVale, ¿desea comprar otra cosa?\n")
@@ -102,8 +111,9 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                 print("No disponemos de esa arma en la tienda, vuelva a seleccionarlo.")
                 continue
         elif numero_tienda_lista == 2:  # Si la variable es igual a 2 escogiste armadura.
-            print(tienda[1])  # Aquí te imprime las armaduras
             time.sleep(0.5)
+            print(tienda[1])  # Aquí te imprime las armaduras
+            input('Presiona ENTER para continuar...')
             numero_tienda_sublista = str(input("Introduzca la letra dentro del paréntesis de lo que desee: "))
             if numero_tienda_sublista.upper() == 'S':  # Si colocas la letra S, pides el escudo.
                 print(f'El escudo cuesta: 10 monedas')  # Aquí te imprime cuanto cuesta el escudo.
@@ -115,15 +125,19 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                         mochila.update({"monedas": mochila.get("monedas") - 10})
                         mochila['escudo']['cantidad'] += 1
                         print("¡Gracias por tu compra, aquí tiene su escudo!")  # Agradecimiento
+                        input('Presiona ENTER para continuar...')
                         print(f"--> Actualmente tienes: {mochila['escudo']['cantidad']} Escudos")
+                        # Le muestra que tiene del objeto que mostró
                         print(f"--> Te quedan: {mochila.get('monedas')} Monedas")
+                        time.sleep(1)
                         print("¡Enhorabuena! Por comprar un escudo te han dado 1 punto más para tu defensa. Suma tu "
                               "punto")
                         config_habilidades.nuevo_punto(mochila, 'destreza', 1, puntos)
                         continue
                     else:  # Si no tiene las 200 monedas.
                         print(f'Vaya parece que no tienes suficientes monedas.\nDispones de {mochila.get("monedas")} .'
-                              f'\nVuelve cuando tengas las 10 monedas. ¡Hasta pronto!')
+                              f'\nVuelve cuando tengas las 10 monedas.')
+                        time.sleep(0.8)
                         continue  # Lo devuelve a la tienda
                 elif numero_de_compra == 2:
                     print("\nVale, ¿desea comprar otra cosa?\n")
@@ -142,6 +156,7 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                         mochila.update({"monedas": mochila.get("monedas") - 30})
                         mochila['armadura nivel 1']['cantidad'] += 1
                         print("¡Gracias por tu compra, aquí tiene su armadura nivel 1!")  # Agradecimiento
+                        input('Presiona ENTER para continuar...')
                         print(f"--> Actualmente tienes {mochila['armadura nivel 1']['cantidad']} Armadura nivel 1")
                         print(f"--> Te quedan: {mochila.get('monedas')} Monedas")
                         config_habilidades.nuevo_punto(mochila, 'destreza', 2, puntos)
@@ -149,6 +164,7 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                     else:  # Si no tiene las 200 monedas.
                         print(f'Vaya parece que no tienes suficientes monedas.\nDispones de {mochila.get("monedas")} .'
                               f'\nVuelve cuando tengas las 30 monedas. ¡Hasta pronto!')
+                        time.sleep(0.8)
                         continue  # Lo devuelve a la tienda
                 elif numero_de_compra == 2:
                     print("\nVale, ¿desea comprar otra cosa?\n")
@@ -167,6 +183,7 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                         mochila.update({"monedas": mochila.get("monedas") - 40})
                         mochila['armadura nivel 2']['cantidad'] += 1
                         print("¡Gracias por tu compra, aquí tiene su armadura nivel 2!")  # Agradecimiento
+                        input('Presiona ENTER para continuar...')
                         print(f"--> Actualmente tienes: {mochila['armadura nivel 2']['cantidad']} Armadura nivel 2")
                         print(f"--> Te quedan: {mochila.get('monedas')} Monedas")
                         config_habilidades.nuevo_punto(mochila, 'destreza', 3, puntos)
@@ -174,6 +191,7 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                     else:  # Si no tiene las 200 monedas.
                         print(f'Vaya parece que no tienes suficientes monedas.\nDispones de {mochila.get("monedas")} .'
                               f'\nVuelve cuando tengas las 40 monedas. ¡Hasta pronto!')
+                        time.sleep(0.8)
                         continue  # Lo devuelve a la tienda
                 elif numero_de_compra == 2:
                     print("\nVale, ¿desea comprar otra cosa?\n")
@@ -192,6 +210,7 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                         mochila.update({"monedas": mochila.get("monedas") - 50})
                         mochila['armadura nivel 3']['cantidad'] += 1
                         print("¡Gracias por tu compra, aquí tiene su armadura nivel 3!")  # Agradecimiento
+                        input('Presiona ENTER para continuar...')
                         print(f"--> Actualmente tienes: {mochila['armadura nivel 3']['cantidad']} Armadura nivel 3")
                         print(f"--> Te quedan: {mochila.get('monedas')} Monedas")
                         config_habilidades.nuevo_punto(mochila, 'destreza', 4, puntos)
@@ -199,6 +218,7 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                     else:  # Si no tiene las 200 monedas.
                         print(f'Vaya parece que no tienes suficientes monedas.\nDispones de {mochila.get("monedas")} .'
                               f'\nVuelve cuando tengas las 50 monedas. ¡Hasta pronto!')
+                        time.sleep(0.8)
                         continue  # Lo devuelve a la tienda
                 elif numero_de_compra == 2:
                     print("\nVale, ¿desea comprar otra cosa?\n")
@@ -222,12 +242,14 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                     mochila.update({"monedas": mochila.get("monedas") - 20})
                     mochila['pocion de vida']['cantidad'] += 1
                     print("¡Gracias por tu compra, aquí tiene su poción de vida!")  # Agradecimiento
+                    input('Presiona ENTER para continuar...')
                     print(f"--> Actualmente tienes {mochila['pocion de vida']['cantidad']} Poción de vida")
                     print(f"--> Te quedan: {mochila.get('monedas')} Monedas")
                     continue
                 else:  # Si no tiene las 200 monedas.
                     print(f'Vaya parece que no tienes suficientes monedas.\nDispones de {mochila.get("monedas")} .'
                           f'\nVuelve cuando tengas las 20 monedas. ¡Hasta pronto!')
+                    time.sleep(0.8)
                     continue  # Lo devuelve a la tienda
             elif numero_de_compra == 2:
                 print("\nVale, ¿desea comprar otra cosa?\n")
@@ -248,9 +270,9 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                                           "---> Introduce el número: "))
                 print("-------------------------------------\n")
                 time.sleep(0.5)
-                print("Vale, quieres venderme un artículo. Muéstrame  que traes.\n")
-                time.sleep(1)
                 if vender_tienda == 1:
+                    print("Vale, quieres venderme un artículo. Muéstrame  que traes.\n")
+                    time.sleep(1)
                     input('Presiona ENTER para continuar...')
                     origen = str(input("Donde está el objeto que quieres vender?\n"
                                        "---> Bolsa\n"
@@ -270,7 +292,10 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                             input('Presiona ENTER para continuar...')
                             venta_obj = input(f'¿Cuál objeto quieres vender de tu bolsa?\n'
                                               f'Ingresa el nombre del objeto: ')
-                            if venta_obj in bolsa:
+                            if venta_obj.lower() == 's':
+                                print("Regresemos...")
+                                break
+                            elif venta_obj in bolsa:
                                 if bolsa[venta_obj]["cantidad"] >= 1:
                                     print(f'Tienes {bolsa[venta_obj]["cantidad"]} {venta_obj}')
                                     num_venta = int(input("¿Cuántas quieres vender?\n"
@@ -308,7 +333,10 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                             input('Presiona ENTER para continuar...')
                             venta_obj = str(input(f'¿Cuál objeto quieres vender de tu mochila?\n'
                                                   f'Ingresa el nombre del objeto: '))
-                            if venta_obj in mochila:
+                            if venta_obj.lower() == 's':
+                                print("Regresemos...")
+                                break
+                            elif venta_obj in mochila:
                                 if mochila[venta_obj]["cantidad"] >= 1:
                                     num_venta = int(input("¿Cuántas quieres vender?\n"
                                                           "---> Introduce el número: "))
@@ -327,6 +355,7 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                             elif venta_obj not in mochila:
                                 print("Lo siento ese objeto no está en tu mochila, ingresa otro de nuevo...")
                                 continue
+
                 elif vender_tienda == 2:
                     print("Hasta pronto, ven cuando quieras a la sección de venta")
                     input('Presiona ENTER para continuar...')
@@ -348,6 +377,7 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
     return mochila, bolsa
 
 
+ventas = True
 puntos = 1
 bolsillo = {'espada goblin': {'daño': 6, 'precio': None, 'venta': 5, 'manos': 1, 'arma': True, 'cantidad': 3},
             'escudo goblin': {'precio': None, 'venta': 5, 'destreza': 1, 'protección': True, 'cantidad': 1}}
@@ -362,4 +392,4 @@ mochi = {'escudo': {'precio': 10, 'venta': 10 * 0.8, 'destreza': 1, 'protección
          'pocion de vida': {'precio': 20, 'venta': 20 * 0.5, 'vida': 2, 'pocion': True, 'cantidad': 0}, 'monedas': 1000
          }
 
-fun_tienda(mochi, bolsillo)  # Llamando a la función tienda
+# fun_tienda(mochi, bolsillo)  # Llamando a la función tienda

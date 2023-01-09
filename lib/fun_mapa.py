@@ -7,8 +7,9 @@ import funcionesjueguito
 
 def fun_mapa(player, mochi, bolsa, inventario, stats_player):  # Función Mapa
     while True:
-        menu_viaje = int(input("############################\n           "
+        menu_viaje = int(input("============================\n           "
                                "MAPA\n"
+                               "============================\n"
                                "Elige a donde quieres ir:"
                                "\n1)Pueblo\n2)Cuevas\n3)Guarida\n"
                                "Coloca el número de tu opción: "))
