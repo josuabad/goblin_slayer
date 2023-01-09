@@ -39,32 +39,8 @@ def experiencia(personaje, habilidad):
         print(f'Te obsequiamos {puntos} puntos de vida permanentes')
         print(f'Tus habilidades se quedan de la siguiente manera:\n'
               f'{personaje}')
-        punto_extra = str(input('¡También te obsequiamos 1 punto en cualquiera de tus habilidades!\n'
-                                '--> Fuerza\n'
-                                '--> Destreza\n'
-                                '--> Constitución\n'
-                                '¿Dónde te gustaría repartir tu punto [f/d/c] ?: '))
-        if punto_extra.lower() == 'f':
-            personaje.update({'fuerza': personaje.get('fuerza') + 1})
-            print(f'GENIAL\n'
-                  'Has escogido Fuerza')
-            time.sleep(0.5)
-            print('Tus habilidades se quedan de la siguiente manera:\n'
-                  f'{personaje}')
-        elif punto_extra.lower() == 'd':
-            personaje.update({'destreza': personaje.get('destreza') + 1})
-            print(f'GENIAL\n'
-                  'Has escogido Destreza')
-            time.sleep(0.5)
-            print('Tus habilidades se quedan de la siguiente manera:\n'
-                  f'{personaje}')
-        elif punto_extra.lower() == 'c':
-            personaje.update({'constitucion': personaje.get('constitucion') + 1})
-            print(f'GENIAL\n'
-                  'Has escogido Constitución')
-            time.sleep(0.5)
-            print('Tus habilidades se quedan de la siguiente manera:\n'
-                  f'{personaje}')
+        print('¡También te obsequiamos 1 punto en cualquiera de tus habilidades!')
+        config_habilidades.habilidades(personaje_habilidades, 1)
         return personaje, habilidad
 
 

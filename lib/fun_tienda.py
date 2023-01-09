@@ -297,12 +297,12 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                       f'  {mochila["hacha dos manos"]["cantidad"]}\n')
                 print("-------------------------------------\n")
                 input('Presiona ENTER para continuar...')
-                venta_obj = input(f'¿Cuál objeto quieres vender de tu mochila?\n'
-                                  f'Ingresa el nombre del objeto: ')
+                venta_obj = str(input(f'¿Cuál objeto quieres vender de tu mochila?\n'
+                                      f'Ingresa el nombre del objeto: '))
                 if mochila[venta_obj]["cantidad"] >= 1:
                     print(f'Muy bien, te compraré tu {venta_obj}')
                     # vender = {mochila[venta_obj]['venta']}
-                    mochila.update({'monedas': mochila.get('monedas') + {mochila[venta_obj]['venta']}})
+                    mochila.update({'monedas': mochila.get('monedas') + mochila[venta_obj]['venta']})
                     print(f'Aquí tienes tu dinero {mochila[venta_obj]["venta"]}')
                     print(f'Muy bien jugador, ahora tienes {mochila.get("monedas")} monedas')
                     continue
