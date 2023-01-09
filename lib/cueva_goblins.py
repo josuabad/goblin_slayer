@@ -51,32 +51,36 @@ def muerte_goblin(personaje, bolsillo, tipo, num, total=False):
     # En el caso de que muera un goblin, toma las variables del personaje, su bolsillo...
     # El tipo de goblin eliminado, el numero de goblins en la cueva y el si ya no quedan goblins
     # Devuelve las variables personaje con el aumento de experiencia, y el bolsillo con las nuevas recompensas y monedas
-    if tipo == 'espada':
-        nuevo = recuperar_extras('espada')
+    espacio = features.medidor_de_bolsillos(bolsillo)
+    if espacio:
+        if tipo == 'espada':
+            nuevo = recuperar_extras('espada')
         if nuevo:
             try:
                 bolsillo['espada goblin']['cantidad'] += 1
             except KeyError:
                 bolsillo.update(nuevo)
-    else:
-        nuevo = recuperar_extras('escudo')
-        if nuevo:
+        else:
+            nuevo = recuperar_extras('escudo')
+            if nuevo:
+                try:
+                    bolsillo['escudo goblin']['cantidad'] += 1
+                except KeyError:
+                    bolsillo.update(nuevo)
+        moneda = monedas()
+        if moneda:
             try:
-                bolsillo['escudo goblin']['cantidad'] += 1
+                bolsillo['monedas'] += moneda
             except KeyError:
-                bolsillo.update(nuevo)
-    moneda = monedas()
-    if moneda:
-        try:
-            bolsillo['monedas'] += moneda
-        except KeyError:
-            bolsillo.update({'monedas': moneda})
-    if total:
-        bonus = 2 * num
-        personaje['experiencia'] += bonus
+                bolsillo.update({'monedas': moneda})
+        if total:
+            bonus = 2 * num
+            personaje['experiencia'] += bonus
+            return personaje, bolsillo
+        personaje['experiencia'] += 20
         return personaje, bolsillo
-    personaje['experiencia'] += 20
-    return personaje, bolsillo
+    else:
+        pass  # No devuelve nada
 
 
 def pre_combate(mochila, habilidades, personaje):
@@ -98,7 +102,7 @@ def pre_combate(mochila, habilidades, personaje):
             armas.append(item)
         except KeyError:  # No hace falta el desplegable de los escudos, nada más se puede llevar uno
             try:
-                mochila[item]['protección']
+                mochila[item]['proteccion']
                 escudos.append(item)
             except KeyError:  # Tampoco hace falta de las pociones, solo hay que guardar en número de pociones que tiene
                 pociones = mochila[item]['cantidad']
@@ -161,11 +165,13 @@ def combate(personaje, equipo, bolsillo, tipo_goblin: list):
                                 print(f'Tienes {personaje["vida"]} puntos de vida y {is_pocion} pociones guardadas')
                                 usar_pocion = input('¿Quieres consumir una de tus pociones? [s/n]: ')
                                 if usar_pocion.lower() == 's':
-                                    print(f'Ten en cuenta que la poción de vida regenera {equipo["poción de vida"]["vida"]} puntos de vida')
+                                    print(f'Ten en cuenta que la poción de vida regenera {equipo["poción de vida"]["vida"]} puntos de vida como mínimo')
                                     while True:
                                         cantidad = int(input('¿Cuántas quieres consumir?: '))
                                         if 0 <= cantidad <= is_pocion:
-                                            personaje['vida'] += equipo['poción de vida']['vida'] * cantidad
+                                            for veces in range(cantidad):
+                                                posible_vida = random.randint(0, 6)
+                                                personaje['vida'] += posible_vida + equipo['poción de vida']['vida']
                                             equipo['poción de vida']['cantidad'] -= cantidad
                                             run = False
                                             break
@@ -248,10 +254,13 @@ def combate(personaje, equipo, bolsillo, tipo_goblin: list):
                                 print(f'Tienes {personaje["vida"]} puntos de vida y {is_pocion} pociones guardadas')
                                 usar_pocion = input('¿Quieres consumir una de tus pociones? [s/n]: ')
                                 if usar_pocion.lower() == 's':
-                                    print(f'Ten en cuenta que la poción de vida regenera {equipo["poción de vida"]["vida"]} puntos de vida')
+                                    print(f'Ten en cuenta que la poción de vida regenera {equipo["poción de vida"]["vida"]} puntos de vida como mínimo')
                                     while True:
                                         cantidad = int(input('¿Cuántas quieres consumir?: '))
                                         if 0 <= cantidad <= is_pocion:
+                                            for veces in range(cantidad):
+                                                posible_vida = random.randint(0, 6)
+                                                personaje['vida'] += posible_vida + equipo['poción de vida']['vida']
                                             equipo['poción de vida']['cantidad'] -= cantidad
                                             run = False
                                             break
@@ -349,12 +358,13 @@ def combate(personaje, equipo, bolsillo, tipo_goblin: list):
                                 print(f'Tienes {personaje["vida"]} puntos de vida y {is_pocion} pociones guardadas')
                                 usar_pocion = input('¿Quieres consumir una de tus pociones? [s/n]: ')
                                 if usar_pocion.lower() == 's':
-                                    print(
-                                        f'Ten en cuenta que la poción de vida regenera {equipo["poción de vida"]["vida"]} puntos de vida')
+                                    print(f'Ten en cuenta que la poción de vida regenera {equipo["poción de vida"]["vida"]} puntos de vida como mínimo')
                                     while True:
                                         cantidad = int(input('¿Cuántas quieres consumir?: '))
                                         if 0 <= cantidad <= is_pocion:
-                                            personaje['vida'] += equipo['poción de vida']['vida'] * cantidad
+                                            for veces in range(cantidad):
+                                                posible_vida = random.randint(0, 6)
+                                                personaje['vida'] += posible_vida + equipo['poción de vida']['vida']
                                             equipo['poción de vida']['cantidad'] -= cantidad
                                             run = False
                                             break
@@ -437,11 +447,13 @@ def combate(personaje, equipo, bolsillo, tipo_goblin: list):
                                 print(f'Tienes {personaje["vida"]} puntos de vida y {is_pocion} pociones guardadas')
                                 usar_pocion = input('¿Quieres consumir una de tus pociones? [s/n]: ')
                                 if usar_pocion.lower() == 's':
-                                    print(
-                                        f'Ten en cuenta que la poción de vida regenera {equipo["poción de vida"]["vida"]} puntos de vida')
+                                    print(f'Ten en cuenta que la poción de vida regenera {equipo["poción de vida"]["vida"]} puntos de vida como mínimo')
                                     while True:
                                         cantidad = int(input('¿Cuántas quieres consumir?: '))
                                         if 0 <= cantidad <= is_pocion:
+                                            for veces in range(cantidad):
+                                                posible_vida = random.randint(0, 6)
+                                                personaje['vida'] += posible_vida + equipo['poción de vida']['vida']
                                             equipo['poción de vida']['cantidad'] -= cantidad
                                             run = False
                                             break

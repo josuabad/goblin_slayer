@@ -29,7 +29,7 @@ def pantalla_de_carga():  # Embellecedor de tiempo de carga
 
 def medidor_de_bolsillos(bolsillo):
     # Explicación
-    # Mira cuantas cosas tienes, sin tener en cuenta las monedas.
+    # Mira cuantas cosas tienes, sin tener en cuenta las monedas
     # Devuelve True si hay espacio, False en caso contrario (20 elementos en total)
     # Desarrollo
     cantidad_total = 0
@@ -54,4 +54,44 @@ def medidor_de_bolsillos(bolsillo):
         print('Tienes que ir a tu cueva a dejar todo lo que has guardado')
         print('¡Ya no te entra nada en los bolsillos!')
         print(f'Tienes {cantidad_monedas} monedas')
+        return False
+
+
+def medidor_de_mochila(mochila, tipo_nuevo_elemento=False):
+    # Explicación
+    # Mira cuantas cosas tienes dentro de la mochila
+    # En caso de meter algo más dentro de la mochila hay que determinar el tipo de elemento que se quiere meter
+    # Los tipos de elementos son: arma, protección o pocion
+    # Devuelve True si hay espacio, False en caso contrario (2 armas y 1 escudo, pociones ilimitadas)
+    # Desarrollo
+    cantidad_armas = 0
+    cantidad_proteccion = 0
+    for elemento in mochila:
+        try:
+            if elemento == 'puño' or elemento == 'puños':
+                continue
+            tipo = mochila[elemento]["arma"]
+            if tipo == True:
+                cantidad_armas += 1
+        except KeyError:
+            tipo = mochila[elemento]["proteccion"]
+            if tipo == True:
+                cantidad_proteccion += 1
+    if cantidad_proteccion == 0 and cantidad_armas == 0:
+        return True
+    elif cantidad_proteccion == 1 and cantidad_armas == 2:
+        return False
+    elif cantidad_proteccion == 1 and tipo_nuevo_elemento == 'arma':
+        if cantidad_armas >= 0 and cantidad_armas < 2:
+            return True
+        else:
+            return False
+    elif cantidad_proteccion == 1 and tipo_nuevo_elemento == 'proteccion':
+        return False
+    elif cantidad_armas == 2 and tipo_nuevo_elemento == 'proteccion':
+        if cantidad_proteccion == 0:
+            return True
+        else:
+            return False
+    elif cantidad_armas == 2 and tipo_nuevo_elemento == 'arma':
         return False
