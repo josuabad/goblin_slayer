@@ -1,8 +1,9 @@
 from funcionesjueguito import *
 import time
 
-stats_player = {"vida": 22,"const":1,"destreza":11,"fuerza":11,}
-mochila = {"Armas": {"puño": 0, "espada": 3, "Escudo": 4, "Espada_Magica": 1}, "objetos":{"Pociones":3, "Hidromiel": 0, "Monedas": 4, "Llave": True, } , "Experiencia" : 12}
+habilidades = {"Constitucion":11, "Fuerza": 11, "Destreza": 11}
+stats_player = {"vida": 20,"defensa":11,"Daño":, "Experiencia": 12}
+mochila = {"Armas": {"puño": 0, "espada": 3, "Escudo": 4, "Espada_Magica": 1}, "objetos":{"Pociones":3, "Hidromiel": 0, "Llave": True, } , "Monedas": 4}
 
 armario = {} #Variable general para el armario del jugador
 
@@ -72,6 +73,8 @@ def cueva_jugador(inventario,stats_player):
                     if objeto_guardar not in armario and objeto_guardar in inventario["Armas"]:
                         contador_objetos = 0
                         armario.update({objeto_guardar:contador_objetos+1})
+
+
                         #inventario.update({"Armas":inventario.get(objeto_guardar) - 1})
                         print(armario)
                     elif objeto_guardar in armario:

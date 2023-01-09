@@ -18,6 +18,21 @@ def dados(n): #La función en resumen crea una lista según el número de caras 
     res_dado = random.choice(dado_juego)
     return res_dado
 
+def victoria(inventario):
+    print("\nEnhorabuena Jugador, ahora que has derrotado al ogro, seras bienvenido como todo un héroe en el pueblo")
+    print("*Viaje de regreso al pueblo*")
+    print("\nMira jugador todo el pueblo te ha recibido entre aplausos y coros de victoria.")
+    print("*Celebracion por todo lo alto*")
+    print("*Más tarde*")
+    print("\nVaya ha estado bien la celebracion, no?")
+    print("Que es eso?...")
+    print("Parece que alguien ha metido en tu mochila una llave y un papel con un 5 escrito sobre el. ")    #El numero es susceptible a cambios
+    inventario.update({"Llave": True})
+    print("\nNo tengo idea, de donde sera pero por su aspecto parece de un ostentoso cofre.")
+    print("Debes estar atento, si deseas encontrar ese misterioso cofre.")
+    print("Pero de momento no es prioritario, así que lo puedes dejar para más tarde")
+    #mapa() llamar de nuevo al mapa
+
 #Funcion general de los Combates
 def combate(inventario, stats_player, enemigo_selec): #Esta funcion comprueba que combate debe activar
     enemigo = enemigo_selec #Enemigo es una variable que toma el valor de enemigo_selec
@@ -176,8 +191,8 @@ def combate_ogro(inventario,stats_player):
                 inventario.update({"Monedas": inventario.get('Monedas') + 200})
 
                 print("Ya has terminado tu labor ahora regresaras al pueblo")
-                Combate, turno_player = False, False #Provisional esta linea
-               # def victoria()
+                Combate, turno_player = False, False
+
 
             else:
                 print(f"Tu golpe ha hecho {dam_player} puntos de daño, el Ogro tiene {vida_ogro} puntos de vida")
@@ -199,7 +214,6 @@ def combate_ogro(inventario,stats_player):
             else:
                 print("El ogro no ha impactado")
                 turno_enemigo, turno_player = False, True
-
 
 
 
