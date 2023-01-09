@@ -1,4 +1,4 @@
-# Modulos
+# Módulos
 import time
 import random
 from lib import features
@@ -35,7 +35,7 @@ def monedas():
 
 
 def recuperar_extras(goblin):
-    # Teniendo en cuenta el tipo de goblin, calcula la posibilidad de recoger alguna recompensa suelta después de haber sido eliminado
+    # Teniendo en cuenta el tipo de goblin, calcula la posibilidad de recoger recompensas después de haberlo eliminado
     # Devuelve la recompensa recogida o False si no hubo posibilidad
     is_recuperar = random.randint(1, 10)
     if is_recuperar >= 4:
@@ -48,24 +48,25 @@ def recuperar_extras(goblin):
 
 
 def muerte_goblin(personaje, bolsillo, tipo, num, total=False):
-    # En el caso de que muera un goblin, toma las variables del personaje, su bolsillo, el tipo de goblin eliminado, el numero de goblins en la cueva y el si ya no quedan goblins
-    # Devuelve las variables personaje con su correspondiente aumento de exp, y el bolsillo que guarda las recompensas al igual que las monedas recogidas
+    # En el caso de que muera un goblin, toma las variables del personaje, su bolsillo...
+    # El tipo de goblin eliminado, el numero de goblins en la cueva y el si ya no quedan goblins
+    # Devuelve las variables personaje con el aumento de experiencia, y el bolsillo con las nuevas recompensas y monedas
     if tipo == 'espada':
         nuevo = recuperar_extras('espada')
-        if nuevo != False:
+        if nuevo:
             try:
                 bolsillo['espada goblin']['cantidad'] += 1
             except KeyError:
                 bolsillo.update(nuevo)
     else:
         nuevo = recuperar_extras('escudo')
-        if nuevo != False:
+        if nuevo:
             try:
                 bolsillo['escudo goblin']['cantidad'] += 1
             except KeyError:
                 bolsillo.update(nuevo)
     moneda = monedas()
-    if moneda != False:
+    if moneda:
         try:
             bolsillo['monedas'] += moneda
         except KeyError:
@@ -80,36 +81,38 @@ def muerte_goblin(personaje, bolsillo, tipo, num, total=False):
 
 def pre_combate(mochila, habilidades, personaje):
     # Equipa el arma y escudo que el jugador quiera y pueda para antes de los combates
-    # Además de añadir todas las pociones que tenga el personaje en la mochila
+    # Además de añadir todas las pociones que tenga el personaje dentro de la mochila
     armas = []
     escudos = []
     pociones = 0
     en_uso = {}
-    manos = 2
     num = 0
+    features.borrar_pantalla()
     print('Armas disponibles')
-    for item in mochila:  # Desplegable de armas
+    for item in mochila:  # Desplegable de todas armas
         try:
             mochila[item]['arma']
             num_manos = mochila[item]['manos']
             num += 1
             print(f'  {num}. {item} | {num_manos} manos')
             armas.append(item)
-        except KeyError:
+        except KeyError:  # No hace falta el desplegable de los escudos, nada más se puede llevar uno
             try:
                 mochila[item]['protección']
                 escudos.append(item)
-            except KeyError:
+            except KeyError:  # Tampoco hace falta de las pociones, solo hay que guardar en número de pociones que tiene
                 pociones = mochila[item]['cantidad']
-    while True:  # Saber que arma coger y si me quedan las manos libres para usar mi escudo
+    input('Presiona ENTER para continuar...')
+    while True:  # Saber qué arma coger y si me quedan las manos libres para usar mi escudo
         arma_eleccion = int(input('Introduce el número del arma que quieres coger: '))
-        if arma_eleccion < 1 or arma_eleccion > len(armas) or type(arma_eleccion) != int:
+        if arma_eleccion < 1 or arma_eleccion > len(armas) or type(arma_eleccion) != int:  # No existe la selección
             features.borrar_pantalla()
             print('Algo ha ido mal, repita el proceso por favor')
             continue
         else:
             en_uso.update(articulos.arma(armas[arma_eleccion - 1]))
             print(f'Has escogido: {armas[arma_eleccion - 1]}')
+            input('Presiona ENTER para continuar...')
             break
     manos = 2 - en_uso[armas[arma_eleccion - 1]]['manos']
     while True:
@@ -132,58 +135,83 @@ def pre_combate(mochila, habilidades, personaje):
             break  # Comienza el combate
     if pociones > 0:
         en_uso.update(articulos.pocion('pocion de vida'))
-        en_uso['pocion de vida']['cantidad'] = pociones
-    return en_uso, habilidades, personaje  # Variable "en_uso" hay que recogerla porque son los artículos equipados en el momento
+        en_uso['poción de vida']['cantidad'] = pociones
+    return en_uso, habilidades, personaje  # Recoger variable en_uso, no está preddefinida
 
 
-def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" es una lista con todos los goblins que hay dentro de la cueva
+def combate(personaje, equipo, bolsillo, tipo_goblin: list):
     # Acción propia del combate entre jugador y goblin espada/escudo
     features.borrar_pantalla()
     print('¡Acabas de entrar en la cueva!')
     conteo_goblins = len(tipo_goblin)  # Número de goblins dentro de la cueva
-    is_pocion = 0
     for goblin in range(conteo_goblins):
         goblin_escudo = {'vida': 8, 'daño': 8, 'defensa': 13}  # Características de goblin escudo
         goblin_espada = {'vida': 8, 'daño': 6, 'defensa': 12}  # Características de goblin espada
         if goblin == 0:  # No puedes huir porque es el primer goblin
             if tipo_goblin[goblin] == 'espada':
                 print(f'El primer enemigo es un goblin con espada. Tiene {goblin_espada["vida"]} puntos de vida')
-                continuar = input('Presiona ENTER para continuar... ')
+                input('Presiona ENTER para continuar... ')
                 while goblin_espada['vida'] > 0 or personaje['vida'] > 0:  # Mientras que ninguno de los 2 muera...
+                    # Consumición de la poción de vida
+                    try:
+                        is_pocion = equipo['poción de vida']['cantidad']
+                        if is_pocion > 0:
+                            run = True
+                            while run:
+                                print(f'Tienes {personaje["vida"]} puntos de vida y {is_pocion} pociones guardadas')
+                                usar_pocion = input('¿Quieres consumir una de tus pociones? [s/n]: ')
+                                if usar_pocion.lower() == 's':
+                                    print(f'Ten en cuenta que la poción de vida regenera {equipo["poción de vida"]["vida"]} puntos de vida')
+                                    while True:
+                                        cantidad = int(input('¿Cuántas quieres consumir?: '))
+                                        if 0 <= cantidad <= is_pocion:
+                                            personaje['vida'] += equipo['poción de vida']['vida'] * cantidad
+                                            equipo['poción de vida']['cantidad'] -= cantidad
+                                            run = False
+                                            break
+                                        else:
+                                            features.borrar_pantalla()
+                                            print('Algo ha ido mal, repita el proceso por favor')
+                                            continue
+                                elif usar_pocion.lower() == 'n':
+                                    break
+                                else:
+                                    features.borrar_pantalla()
+                                    print('Algo ha ido mal, repita el proceso por favor')
+                                    continue
+                    except KeyError:
+                        pass
                     # Intenta atacar el jugador
                     is_impacto_jugador = random.randint(0, 20)
                     if goblin_espada['vida'] <= 0:
                         conteo_goblins -= 1  # Goblin muerto, uno menos
                         print(f'¡Enhorabuena, has acabado con un goblin con espada! Faltan {conteo_goblins}')
-                        continuar = input('Presiona ENTER para continuar... ')
-                        actualizacion_resultados = muerte_goblin(personaje, bolsillo, 'espada', conteo_goblins)
+                        input('Presiona ENTER para continuar... ')
+                        # Loot de goblin muerto
+                        muerte_goblin(personaje, bolsillo, 'espada', conteo_goblins)
                         break  # Termina después de regresar el loot correspondiente
                     elif personaje['vida'] <= 0:
-                            features.borrar_pantalla()
-                            print('Te has muerto')
-                            time.sleep(2)
-                            exit()
+                        features.borrar_pantalla()
+                        print('Te has muerto')
+                        time.sleep(3)
+                        exit()
                     elif is_impacto_jugador >= goblin_espada['defensa']:  # Consigue el ataque
-                        time.sleep(2)
+                        time.sleep(3)
                         print('¡Perfecto! Has conseguido impactar')
                         for item in equipo:  # Identificar el arma que va a usar
                             try:
                                 equipo[item]['arma']
                                 impacto_final = random.randint(1, equipo[item]['daño']) + personaje['daño']
                                 goblin_espada['vida'] -= impacto_final
-                            except KeyError:  # Si al principio se encuentra con el escudo, vuelve a verificar cuál es el arma
-                                try:
-                                    equipo[item]['pocion']
-                                    is_pocion = equipo[item]['cantidad']
-                                except KeyError:
-                                    pass
+                            except KeyError:  # Si al principio no encuentra un arma, vuelve a ver cuál es
+                                pass
                         print(f'Has causado un daño de -{impacto_final}')
-                        time.sleep(2)
+                        input('Presiona ENTER para continuar... ')
                         features.borrar_pantalla()
                         print(f'Vidas:')
                         print(f'Goblin: {goblin_espada["vida"]}')
                         print(f'Personaje (tú): {personaje["vida"]}')
-                        continuar = input('Presiona ENTER para continuar... ')
+                        input('Presiona ENTER para continuar... ')
                     else:  # Ataque goblin espada
                         print(f'No has podido atacar, has sacado un {is_impacto_jugador}')
                         is_impacto_goblin = random.randint(0, 20)
@@ -193,72 +221,83 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                             print('¡Prepárate! El goblin te va a atacar')
                             time.sleep(1)
                             print(f'Te ha causado un daño de -{impacto_final}')
+                            input('Presiona ENTER para continuar... ')
                             features.borrar_pantalla()
                             print(f'Vidas:')
                             print(f'Goblin: {goblin_espada["vida"]}')
                             print(f'Personaje (tú): {personaje["vida"]}')
-                            continuar = input('Presiona ENTER para continuar... ')
+                            input('Presiona ENTER para continuar... ')
                         else:
                             print('¡Has tenido suerte, no ha conseguido impactarte!')
+                            input('Presiona ENTER para continuar... ')
                             features.borrar_pantalla()
                             print(f'Vidas:')
                             print(f'Goblin: {goblin_espada["vida"]}')
                             print(f'Personaje (tú): {personaje["vida"]}')
-                            continuar = input('Presiona ENTER para continuar... ')
-                    if is_pocion > 0:
-                        while True:
-                            print(f'Tienes {is_pocion} pociones para recuperar vida')
-                            usar_pocion = input('¿Quieres equiparte alguna? [s/n]: ')
-                            if usar_pocion.lower() == 's':
-                                num_pocion = int(input('¿Cuántas quieres usar?: '))
-                                if 0 < num_pocion <= is_pocion:
-                                    pass
-                                elif num_pocion == 0:
-                                    pass
-                                else:
-                                    pass
-                            elif usar_pocion.lower() == 'n':
-                                features.borrar_pantalla()
-                                break
-                            else:
-                                features.borrar_pantalla()
-                                print('Algo ha ido mal, repita el proceso por favor')
-                                continue
+                            input('Presiona ENTER para continuar... ')
             else:
                 print(f'El primer enemigo es un goblin con escudo. Tiene {goblin_escudo["vida"]} puntos de vida')
-                continuar = input('Presiona ENTER para continuar... ')
+                input('Presiona ENTER para continuar... ')
                 while goblin_escudo['vida'] > 0 or personaje['vida'] > 0:  # Mientras que ninguno de los 2 muera...
+                    # Consumición de la poción de vida
+                    try:
+                        is_pocion = equipo['poción de vida']['cantidad']
+                        if is_pocion > 0:
+                            run = True
+                            while run:
+                                print(f'Tienes {personaje["vida"]} puntos de vida y {is_pocion} pociones guardadas')
+                                usar_pocion = input('¿Quieres consumir una de tus pociones? [s/n]: ')
+                                if usar_pocion.lower() == 's':
+                                    print(f'Ten en cuenta que la poción de vida regenera {equipo["poción de vida"]["vida"]} puntos de vida')
+                                    while True:
+                                        cantidad = int(input('¿Cuántas quieres consumir?: '))
+                                        if 0 <= cantidad <= is_pocion:
+                                            equipo['poción de vida']['cantidad'] -= cantidad
+                                            run = False
+                                            break
+                                        else:
+                                            features.borrar_pantalla()
+                                            print('Algo ha ido mal, repita el proceso por favor')
+                                            continue
+                                elif usar_pocion.lower() == 'n':
+                                    break
+                                else:
+                                    features.borrar_pantalla()
+                                    print('Algo ha ido mal, repita el proceso por favor')
+                                    continue
+                    except KeyError:
+                        pass
                     # Intenta atacar el jugador
                     is_impacto_jugador = random.randint(0, 20)
                     if goblin_escudo['vida'] <= 0:
                         conteo_goblins -= 1  # Goblin muerto, uno menos
                         print(f'¡Enhorabuena, has acabado con un goblin con escudo! Faltan {conteo_goblins}')
-                        continuar = input('Presiona ENTER para continuar... ')
+                        input('Presiona ENTER para continuar... ')
                         # Loot de goblin muerto
-                        actualizacion_resultados = muerte_goblin(personaje, bolsillo, 'escudo', conteo_goblins)
+                        muerte_goblin(personaje, bolsillo, 'escudo', conteo_goblins)
                         break
                     elif personaje['vida'] <= 0:
-                            features.borrar_pantalla()
-                            print('Te has muerto')
-                            time.sleep(2)
-                            exit()
+                        features.borrar_pantalla()
+                        print('Te has muerto')
+                        time.sleep(3)
+                        exit()
                     elif is_impacto_jugador >= goblin_escudo['defensa']:  # Consigue el ataque
-                        time.sleep(2)
+                        time.sleep(3)
                         print('¡Perfecto! Has conseguido impactar')
                         for item in equipo:  # Identificar el arma que va a usar
                             try:
                                 equipo[item]['arma']
                                 impacto_final = random.randint(1, equipo[item]['daño']) + personaje['daño']
                                 goblin_escudo['vida'] -= impacto_final
-                            except KeyError:  # Si al principio se encuentra con el escudo, vuelve a verificar cuál es el arma
+                            except KeyError:  # Si al principio se encuentra con el escudo, vuelve a ver cuál es el arma
                                 pass
                         print(f'Has causado un daño de -{impacto_final}')
-                        time.sleep(2)
+                        input('Presiona ENTER para continuar... ')
                         features.borrar_pantalla()
                         print(f'Vidas:')
                         print(f'Goblin: {goblin_escudo["vida"]}')
                         print(f'Personaje (tú): {personaje["vida"]}')
-                        continuar = input('Presiona ENTER para continuar... ')
+                        input('Presiona ENTER para continuar... ')
                     else:  # Ataque goblin escudo
                         print(f'No has podido atacar, has sacado un {is_impacto_jugador}')
                         is_impacto_goblin = random.randint(0, 20)
@@ -268,19 +307,21 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                             print('¡Prepárate! El goblin te va a atacar')
                             time.sleep(1)
                             print(f'Te ha causado un daño de -{impacto_final}')
+                            input('Presiona ENTER para continuar... ')
                             features.borrar_pantalla()
                             print(f'Vidas:')
                             print(f'Goblin: {goblin_escudo["vida"]}')
                             print(f'Personaje (tú): {personaje["vida"]}')
-                            continuar = input('Presiona ENTER para continuar... ')
+                            input('Presiona ENTER para continuar... ')
                         else:
                             print('¡Has tenido suerte, no ha conseguido impactarte!')
+                            input('Presiona ENTER para continuar... ')
                             features.borrar_pantalla()
                             print(f'Vidas:')
                             print(f'Goblin: {goblin_espada["vida"]}')
                             print(f'Personaje (tú): {personaje["vida"]}')
-                            continuar = input('Presiona ENTER para continuar... ')
-        else:  # Puedes huir
+                            input('Presiona ENTER para continuar... ')
+        else:  # Puedes huir desde el principio
             while True:  # Oportunidad de huir. Solo 1 vez por cada goblin
                 oportunidad_huir = input('Puedes probar a huir, ¿lo intentas? [s/n]: ')
                 if oportunidad_huir.lower() == 's':
@@ -297,39 +338,69 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                     continue
             if tipo_goblin[goblin] == 'espada':
                 print(f'El siguiente enemigo es un goblin con espada. Tiene {goblin_espada["vida"]} puntos de vida')
-                continuar = input('Presiona ENTER para continuar... ')
+                input('Presiona ENTER para continuar... ')
                 while goblin_espada['vida'] > 0 or personaje['vida'] > 0:  # Mientras que ninguno de los 2 muera...
+                    # Consumición de la poción de vida
+                    try:
+                        is_pocion = equipo['poción de vida']['cantidad']
+                        if is_pocion > 0:
+                            run = True
+                            while run:
+                                print(f'Tienes {personaje["vida"]} puntos de vida y {is_pocion} pociones guardadas')
+                                usar_pocion = input('¿Quieres consumir una de tus pociones? [s/n]: ')
+                                if usar_pocion.lower() == 's':
+                                    print(
+                                        f'Ten en cuenta que la poción de vida regenera {equipo["poción de vida"]["vida"]} puntos de vida')
+                                    while True:
+                                        cantidad = int(input('¿Cuántas quieres consumir?: '))
+                                        if 0 <= cantidad <= is_pocion:
+                                            personaje['vida'] += equipo['poción de vida']['vida'] * cantidad
+                                            equipo['poción de vida']['cantidad'] -= cantidad
+                                            run = False
+                                            break
+                                        else:
+                                            features.borrar_pantalla()
+                                            print('Algo ha ido mal, repita el proceso por favor')
+                                            continue
+                                elif usar_pocion.lower() == 'n':
+                                    break
+                                else:
+                                    features.borrar_pantalla()
+                                    print('Algo ha ido mal, repita el proceso por favor')
+                                    continue
+                    except KeyError:
+                        pass
                     # Intenta atacar el jugador
                     is_impacto_jugador = random.randint(0, 20)
                     if goblin_espada['vida'] <= 0:
                         conteo_goblins -= 1  # Goblin muerto, uno menos
                         print(f'¡Enhorabuena, has acabado con un goblin con espada! Faltan {conteo_goblins}')
-                        continuar = input('Presiona ENTER para continuar... ')
+                        input('Presiona ENTER para continuar... ')
                         # Loot de goblin muerto
-                        actualizacion_resultados = muerte_goblin(personaje, bolsillo, 'espada', conteo_goblins)
-                        break
+                        muerte_goblin(personaje, bolsillo, 'espada', conteo_goblins)
+                        break  # Termina después de regresar el loot correspondiente
                     elif personaje['vida'] <= 0:
-                            features.borrar_pantalla()
-                            print('Te has muerto')
-                            time.sleep(2)
-                            exit()
+                        features.borrar_pantalla()
+                        print('Te has muerto')
+                        time.sleep(3)
+                        exit()
                     elif is_impacto_jugador >= goblin_espada['defensa']:  # Consigue el ataque
-                        time.sleep(2)
+                        time.sleep(3)
                         print('¡Perfecto! Has conseguido impactar')
                         for item in equipo:  # Identificar el arma que va a usar
                             try:
                                 equipo[item]['arma']
                                 impacto_final = random.randint(1, equipo[item]['daño']) + personaje['daño']
                                 goblin_espada['vida'] -= impacto_final
-                            except KeyError:  # Si al principio se encuentra con el escudo, vuelve a verificar cuál es el arma
+                            except KeyError:  # Si al principio se encuentra con el escudo, vuelve a ver cuál es el arma
                                 pass
                         print(f'Has causado un daño de -{impacto_final}')
-                        time.sleep(2)
+                        input('Presiona ENTER para continuar... ')
                         features.borrar_pantalla()
                         print(f'Vidas:')
                         print(f'Goblin: {goblin_espada["vida"]}')
                         print(f'Personaje (tú): {personaje["vida"]}')
-                        continuar = input('Presiona ENTER para continuar... ')
+                        input('Presiona ENTER para continuar... ')
                     else:  # Ataque goblin espada
                         print(f'No has podido atacar, has sacado un {is_impacto_jugador}')
                         is_impacto_goblin = random.randint(0, 20)
@@ -339,53 +410,84 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                             print('¡Prepárate! El goblin te va a atacar')
                             time.sleep(1)
                             print(f'Te ha causado un daño de -{impacto_final}')
+                            input('Presiona ENTER para continuar... ')
                             features.borrar_pantalla()
                             print(f'Vidas:')
                             print(f'Goblin: {goblin_espada["vida"]}')
                             print(f'Personaje (tú): {personaje["vida"]}')
-                            continuar = input('Presiona ENTER para continuar... ')
+                            input('Presiona ENTER para continuar... ')
                         else:
                             print('¡Has tenido suerte, no ha conseguido impactarte!')
+                            input('Presiona ENTER para continuar... ')
                             features.borrar_pantalla()
                             print(f'Vidas:')
                             print(f'Goblin: {goblin_espada["vida"]}')
                             print(f'Personaje (tú): {personaje["vida"]}')
-                            continuar = input('Presiona ENTER para continuar... ')
+                            input('Presiona ENTER para continuar... ')
             else:
                 print(f'El primer enemigo es un goblin con escudo. Tiene {goblin_escudo["vida"]} puntos de vida')
-                continuar = input('Presiona ENTER para continuar... ')
+                input('Presiona ENTER para continuar... ')
                 while goblin_escudo['vida'] > 0 or personaje['vida'] > 0:  # Mientras que ninguno de los 2 muera...
+                    # Consumición de la poción de vida
+                    try:
+                        is_pocion = equipo['poción de vida']['cantidad']
+                        if is_pocion > 0:
+                            run = True
+                            while run:
+                                print(f'Tienes {personaje["vida"]} puntos de vida y {is_pocion} pociones guardadas')
+                                usar_pocion = input('¿Quieres consumir una de tus pociones? [s/n]: ')
+                                if usar_pocion.lower() == 's':
+                                    print(
+                                        f'Ten en cuenta que la poción de vida regenera {equipo["poción de vida"]["vida"]} puntos de vida')
+                                    while True:
+                                        cantidad = int(input('¿Cuántas quieres consumir?: '))
+                                        if 0 <= cantidad <= is_pocion:
+                                            equipo['poción de vida']['cantidad'] -= cantidad
+                                            run = False
+                                            break
+                                        else:
+                                            features.borrar_pantalla()
+                                            print('Algo ha ido mal, repita el proceso por favor')
+                                            continue
+                                elif usar_pocion.lower() == 'n':
+                                    break
+                                else:
+                                    features.borrar_pantalla()
+                                    print('Algo ha ido mal, repita el proceso por favor')
+                                    continue
+                    except KeyError:
+                        pass
                     # Intenta atacar el jugador
                     is_impacto_jugador = random.randint(0, 20)
                     if goblin_escudo['vida'] <= 0:
                         conteo_goblins -= 1  # Goblin muerto, uno menos
                         print(f'¡Enhorabuena, has acabado con un goblin con escudo! Faltan {conteo_goblins}')
-                        continuar = input('Presiona ENTER para continuar... ')
+                        input('Presiona ENTER para continuar... ')
                         # Loot de goblin muerto
-                        actualizacion_resultados = muerte_goblin(personaje, bolsillo, 'escudo', conteo_goblins)
+                        muerte_goblin(personaje, bolsillo, 'escudo', conteo_goblins)
                         break
                     elif personaje['vida'] <= 0:
-                            features.borrar_pantalla()
-                            print('Te has muerto')
-                            time.sleep(2)
-                            exit()
+                        features.borrar_pantalla()
+                        print('Te has muerto')
+                        time.sleep(3)
+                        exit()
                     elif is_impacto_jugador >= goblin_escudo['defensa']:  # Consigue el ataque
-                        time.sleep(2)
+                        time.sleep(3)
                         print('¡Perfecto! Has conseguido impactar')
                         for item in equipo:  # Identificar el arma que va a usar
                             try:
                                 equipo[item]['arma']
                                 impacto_final = random.randint(1, equipo[item]['daño']) + personaje['daño']
                                 goblin_escudo['vida'] -= impacto_final
-                            except KeyError:  # Si al principio se encuentra con el escudo, vuelve a verificar cuál es el arma
+                            except KeyError:  # Si al principio se encuentra con el escudo, vuelve a ver cuál es el arma
                                 pass
                         print(f'Has causado un daño de -{impacto_final}')
-                        time.sleep(2)
+                        input('Presiona ENTER para continuar... ')
                         features.borrar_pantalla()
                         print(f'Vidas:')
                         print(f'Goblin: {goblin_escudo["vida"]}')
                         print(f'Personaje (tú): {personaje["vida"]}')
-                        continuar = input('Presiona ENTER para continuar... ')
+                        input('Presiona ENTER para continuar... ')
                     else:  # Ataque goblin escudo
                         print(f'No has podido atacar, has sacado un {is_impacto_jugador}')
                         is_impacto_goblin = random.randint(0, 20)
@@ -395,20 +497,22 @@ def combate(personaje, equipo, bolsillo, tipo_goblin):  # Recordar que "goblin" 
                             print('¡Prepárate! El goblin te va a atacar')
                             time.sleep(1)
                             print(f'Te ha causado un daño de -{impacto_final}')
+                            input('Presiona ENTER para continuar... ')
                             features.borrar_pantalla()
                             print(f'Vidas:')
                             print(f'Goblin: {goblin_escudo["vida"]}')
                             print(f'Personaje (tú): {personaje["vida"]}')
-                            continuar = input('Presiona ENTER para continuar... ')
+                            input('Presiona ENTER para continuar... ')
                         else:
                             print('¡Has tenido suerte, no ha conseguido impactarte!')
+                            input('Presiona ENTER para continuar... ')
                             features.borrar_pantalla()
                             print(f'Vidas:')
                             print(f'Goblin: {goblin_espada["vida"]}')
                             print(f'Personaje (tú): {personaje["vida"]}')
-                            continuar = input('Presiona ENTER para continuar... ')
+                            input('Presiona ENTER para continuar... ')
     print('¡Has acabado con todos los goblins de la cueva!')
-    actualizacion_resultados = muerte_goblin(personaje, bolsillo, 'escudo', conteo_goblins, True)
+    muerte_goblin(personaje, bolsillo, 'escudo', conteo_goblins, True)
     return bolsillo, personaje
 
 

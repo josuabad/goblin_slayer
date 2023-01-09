@@ -1,4 +1,4 @@
-# Versión oficial
+# Módulos
 from lib import features
 from lib import articulos
 from lib import config_habilidades
@@ -14,7 +14,7 @@ print(f'¡Bienvenido {nombre}!')
 
 # Habilidades del personaje
 personaje_habilidades = {'fuerza': 10, 'destreza': 10, 'constitucion': 10}
-personaje_especificas = {'daño': 0, 'defensa': 0, 'vida': 0, 'experiencia': 0}
+personaje_especificas = {'daño': 0, 'defensa': 0, 'vida': 0, 'experiencia': 0, 'level': 0}
 mochila = {}
 bolsillo = {}
 mochila.update(articulos.arma('puño'))
@@ -29,6 +29,7 @@ while run:
     print(f'Tus características son las siguientes: {personaje_especificas}')
     while True:
         if puntos_habilidades > 0:
+            features.borrar_pantalla()
             seguir = input(f'Todavía tienes {puntos_habilidades} más. ¿Deseas repartirlos? [s/n]: ')
             if seguir.lower() == 's':
                 break

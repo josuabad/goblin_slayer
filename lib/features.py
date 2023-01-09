@@ -1,8 +1,10 @@
+# Módulos
 import os
 import time
 
 
-def borrar_pantalla():  # Borra la pantalla
+# Funciones
+def borrar_pantalla():  # Borrar la pantalla
     if os.name == "posix":
         os.system("clear")
     elif os.name == "ce" or os.name == "nt" or os.name == "dos":
@@ -24,12 +26,11 @@ def pantalla_de_carga():  # Embellecedor de tiempo de carga
         borrar_pantalla()
         tiempo += 1
 
-    
-def medidor_de_bolsas(bolsillo):
+
+def medidor_de_bolsillos(bolsillo):
     # Explicación
     # Mira cuantas cosas tienes, sin tener en cuenta las monedas.
     # Devuelve True si hay espacio, False en caso contrario (20 elementos en total)
-
     # Desarrollo
     cantidad_total = 0
     cantidad_monedas = 0
@@ -40,7 +41,7 @@ def medidor_de_bolsas(bolsillo):
             cantidad_monedas = bolsillo[elemento]
     if cantidad_total == 0:
         print('Todavía no tienes nada, sal a la aventura y cárgate con lo que te encuentres')
-        print('El el futuro te puede ser de gran ayuda')
+        print('En el futuro te puede ser de gran ayuda')
         print(f'Tienes {cantidad_monedas} monedas')
         return True
     elif 9 <= cantidad_total <= 11:

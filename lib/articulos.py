@@ -1,3 +1,4 @@
+# Funciones
 def arma(tipo):
     if tipo.lower() == 'espada':
         precio = 10
@@ -9,9 +10,9 @@ def arma(tipo):
     elif tipo.lower() == 'espada mágica':
         precio_espada_magica = 200
         return {'espada mágica': {'daño': 6, 'precio': precio_espada_magica, 'venta': precio_espada_magica * 0.5, 'manos': 1, 'arma': True}}
-    elif tipo.lower() == 'Hacha dos manos':
+    elif tipo.lower() == 'hacha dos manos':
         precio_hacha = 30
-        return {'Hacha dos manos': {'daño': 12, 'precio': precio_hacha, 'venta': precio_hacha * 0.5, 'manos': 2, 'arma': True}}
+        return {'hacha dos manos': {'daño': 12, 'precio': precio_hacha, 'venta': precio_hacha * 0.5, 'manos': 2, 'arma': True}}
 
 
 def proteccion(tipo):
@@ -32,6 +33,6 @@ def proteccion(tipo):
 
 
 def pocion(tipo):
-    if tipo.lower() == 'pocion de vida':
+    if tipo.lower() == 'poción de vida':
         precio_pocion = 20
-        return {'pocion de vida': {'precio': precio_pocion, 'venta': precio_pocion * 0.5, 'vida': 2, 'pocion': True, 'cantidad': 1}}
+        return {'poción de vida': {'precio': precio_pocion, 'venta': precio_pocion * 0.5, 'vida': 2, 'pocion': True, 'cantidad': 1}}
