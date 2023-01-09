@@ -1,9 +1,10 @@
 import time
 import fun_tienda
 import features
+import Taberna
 
 
-def fun_mapa(player, mochila, bolsa):  # Función Mapa
+def fun_mapa(player, mochi, bolsa, mochila, inventario, stats_player):  # Función Mapa
     while True:
         menu_viaje = int(input("############################\n           "
                                "MAPA\n"
@@ -19,7 +20,7 @@ def fun_mapa(player, mochila, bolsa):  # Función Mapa
             if lugar_pueblo == 1:
                 print(f'Vamos a entrar a la tienda')
                 input('Presiona ENTER para continuar...')
-                fun_tienda.fun_tienda(mochila, bolsa)
+                fun_tienda.fun_tienda(mochi, bolsa)
                 # Ir a la tienda
             elif lugar_pueblo == 2:
                 print("Vamos a la alcantarilla")
@@ -28,6 +29,7 @@ def fun_mapa(player, mochila, bolsa):  # Función Mapa
             elif lugar_pueblo == 3:
                 print(f'Genial, vamos a la Taberna')
                 input('Presiona ENTER para continuar...')
+                Taberna.taberna(inventario, stats_player)
                 # Ir a la taberna
             elif lugar_pueblo == 4:
                 print(f'Vale, vamos a tu cueva {player}')
@@ -55,7 +57,19 @@ def fun_mapa(player, mochila, bolsa):  # Función Mapa
             continue
 
 
-mochi = {'espada': {'daño': 8, 'precio': 10, 'venta': 8, 'manos': 1, 'arma': True, 'cantidad': 1}}
-bolsillo = {'espada goblin': {'daño': 6, 'precio': None, 'venta': 5, 'manos': 1, 'arma': True, 'cantidad': 1}}
+inventario = 0
+stats_player = {"vida": 13, "const": 1, "destreza": 11, "fuerza": 11, }
+mochilaa = {"arma": {"puño": 0}, "Monedas": 4, "Hidromiel": 0}
+bolsillo = {'espada goblin': {'daño': 6, 'precio': None, 'venta': 5, 'manos': 1, 'arma': True, 'cantidad': 3},
+            'escudo goblin': {'precio': None, 'venta': 5, 'destreza': 1, 'protección': True, 'cantidad': 1}}
+mochi = {'escudo': {'precio': 10, 'venta': 10 * 0.8, 'destreza': 1, 'protección': True, 'cantidad': 0},
+         'espada': {'daño': 8, 'precio': 10, 'venta': 10 * 0.8, 'manos': 1, 'arma': True, 'cantidad': 1},
+         'espada magica': {'daño': 6, 'precio': 200, 'venta': 200 * 0.5, 'manos': 1, 'arma': True, 'cantidad': 0},
+         'hacha dos manos': {'daño': 12, 'precio': 30, 'venta': 30 * 0.5, 'manos': 2, 'arma': True, 'cantidad': 0},
+         'armadura nivel 1': {'precio': 30, 'venta': 30 * 0.5, 'destreza': 2, 'protección': True, 'cantidad': 0},
+         'armadura nivel 2': {'precio': 40, 'venta': 40 * 0.5, 'destreza': 3, 'protección': True, 'cantidad': 0},
+         'armadura nivel 3': {'precio': 50, 'venta': 50 * 0.5, 'destreza': 4, 'protección': True, 'cantidad': 0},
+         'pocion de vida': {'precio': 20, 'venta': 20 * 0.5, 'vida': 2, 'pocion': True, 'cantidad': 0}, 'monedas': 1000
+         }
 
-fun_mapa('isa', mochi, bolsillo)
+fun_mapa('isa', mochi, bolsillo, mochilaa, inventario, stats_player)

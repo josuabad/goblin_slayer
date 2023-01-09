@@ -340,7 +340,7 @@ mochi = {'escudo': {'precio': 10, 'venta': 10 * 0.8, 'destreza': 1, 'protección
          'pocion de vida': {'precio': 20, 'venta': 20 * 0.5, 'vida': 2, 'pocion': True, 'cantidad': 0}, 'monedas': 1000
          }
 
-fun_tienda(mochi, bolsillo)  # Llamando a la función tienda
+#fun_tienda(mochi, bolsillo)  # Llamando a la función tienda
 
 #          NOTAS          #
 

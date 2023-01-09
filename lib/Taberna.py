@@ -68,4 +68,4 @@ inventario = 0
 stats_player = {"vida": 13,"const":1,"destreza":11,"fuerza":11,}
 mochila = {"arma":{"puño":0},"Monedas":4,"Hidromiel": 0}
 
-print(taberna(inventario, stats_player))
+#print(taberna(inventario, stats_player))
