@@ -1,6 +1,4 @@
 import time
-from articulos import *
-import articulos
 
 
 def fun_tienda(mochila, bolsa):  # Fun_Tienda()
