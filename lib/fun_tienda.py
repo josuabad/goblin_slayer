@@ -281,7 +281,9 @@ def fun_tienda(mochila, bolsa):  # Fun_Tienda()
                                     print(f'Aquí tienes tu {bolsa[venta_obj]["venta"] * num_venta} monedas')
                                     print(f'Muy bien jugador, ahora tienes {mochila.get("monedas")} monedas')
                                     print(f'Ahora tienes {bolsa[venta_obj]["cantidad"]- num_venta} {venta_obj}')
+                                    # articulos.arma([venta_obj])
                                     break
+
                                 elif bolsa[venta_obj]["cantidad"] < 1:
                                     print(f"No tienes {venta_obj} para vender")
                                     print("Ve tu bolsa de nuevo y dime algo que si tengas.")

@@ -2,6 +2,7 @@ import time
 import fun_tienda
 import features
 import Taberna
+import funcionesjueguito
 
 
 def fun_mapa(player, mochi, bolsa, inventario, stats_player):  # Función Mapa
@@ -20,17 +21,15 @@ def fun_mapa(player, mochi, bolsa, inventario, stats_player):  # Función Mapa
             if lugar_pueblo == 1:
                 print(f'Vamos a entrar a la tienda')
                 input('Presiona ENTER para continuar...')
-                fun_tienda.fun_tienda(mochi, bolsa)
-                # Ir a la tienda
+                fun_tienda.fun_tienda(mochi, bolsa)  # Ir a la tienda
             elif lugar_pueblo == 2:
                 print("Vamos a la alcantarilla")
                 input('Presiona ENTER para continuar...')
-                # Ir a la cueva de las ratas
+                funcionesjueguito.combate(inventario, stats_player, 1)  # Ir a la cueva de las ratas
             elif lugar_pueblo == 3:
                 print(f'Genial, vamos a la Taberna')
                 input('Presiona ENTER para continuar...')
-                Taberna.taberna(inventario, stats_player)
-                # Ir a la taberna
+                Taberna.taberna(inventario, stats_player)  # Ir a la taberna
             elif lugar_pueblo == 4:
                 print(f'Vale, vamos a tu cueva {player}')
                 input('Presiona ENTER para continuar...')
@@ -50,6 +49,7 @@ def fun_mapa(player, mochi, bolsa, inventario, stats_player):  # Función Mapa
         elif menu_viaje == 3:
             print("Vamos a la GUARIDA DEL OGRO, ¡prepárate!")
             input('Presiona ENTER para continuar...')
+            funcionesjueguito.cueva_ogro(inventario, stats_player)
             # insertar función del combate con el Ogro
         else:
             print(f'Ese lugar no existe {player}, introduce otro.')
