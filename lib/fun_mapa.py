@@ -4,7 +4,7 @@ import features
 import Taberna
 
 
-def fun_mapa(player, mochi, bolsa, mochila, inventario, stats_player):  # Función Mapa
+def fun_mapa(player, mochi, bolsa, inventario, stats_player):  # Función Mapa
     while True:
         menu_viaje = int(input("############################\n           "
                                "MAPA\n"
@@ -59,7 +59,7 @@ def fun_mapa(player, mochi, bolsa, mochila, inventario, stats_player):  # Funci�
 
 inventario = 0
 stats_player = {"vida": 13, "const": 1, "destreza": 11, "fuerza": 11, }
-mochilaa = {"arma": {"puño": 0}, "Monedas": 4, "Hidromiel": 0}
+mochila = {"arma": {"puño": 0}, "Monedas": 4, "Hidromiel": 0}
 bolsillo = {'espada goblin': {'daño': 6, 'precio': None, 'venta': 5, 'manos': 1, 'arma': True, 'cantidad': 3},
             'escudo goblin': {'precio': None, 'venta': 5, 'destreza': 1, 'protección': True, 'cantidad': 1}}
 mochi = {'escudo': {'precio': 10, 'venta': 10 * 0.8, 'destreza': 1, 'protección': True, 'cantidad': 0},
@@ -72,4 +72,4 @@ mochi = {'escudo': {'precio': 10, 'venta': 10 * 0.8, 'destreza': 1, 'protección
          'pocion de vida': {'precio': 20, 'venta': 20 * 0.5, 'vida': 2, 'pocion': True, 'cantidad': 0}, 'monedas': 1000
          }
 
-fun_mapa('isa', mochi, bolsillo, mochilaa, inventario, stats_player)
+fun_mapa('isa', mochi, bolsillo, inventario, stats_player)
