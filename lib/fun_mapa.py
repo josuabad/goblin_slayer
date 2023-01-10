@@ -11,7 +11,7 @@ def fun_mapa(player, mochi, bolsa, inventario, stats_player):  # Función Mapa
                                "MAPA\n"
                                "============================\n"
                                "Elige a donde quieres ir:"
-                               "\n1)Pueblo\n2)Cuevas\n3)Guarida\n"
+                               "\n1)Pueblo\n2)Cuevas\n3)Guarida\n4)Easter Egg\n"
                                "Coloca el número de tu opción: "))
         if menu_viaje == 1:
             features.borrar_pantalla()
@@ -52,6 +52,8 @@ def fun_mapa(player, mochi, bolsa, inventario, stats_player):  # Función Mapa
             input('Presiona ENTER para continuar...')
             funcionesjueguito.cueva_ogro(inventario, stats_player)
             # insertar función del combate con el Ogro
+        elif menu_viaje == 4:
+            print("")
         else:
             print(f'Ese lugar no existe {player}, introduce otro.')
             input('Presiona ENTER para continuar...')
