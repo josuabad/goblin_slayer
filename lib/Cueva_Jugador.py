@@ -1,13 +1,14 @@
 from funcionesjueguito import *
+from articulos import *
 import time
 
 habilidades = {"Constitucion":11, "Fuerza": 11, "Destreza": 11}
-stats_player = {"vida": 20,"defensa":11,"Daño":, "Experiencia": 12}
-mochila = {"Armas": {"puño": 0, "espada": 3, "Escudo": 4, "Espada_Magica": 1}, "objetos":{"Pociones":3, "Hidromiel": 0, "Llave": True, } , "Monedas": 4}
-
+stats_player = {"vida": 20,"defensa":11,"Daño":11, "Experiencia": 12}
+mochila = {'espada goblin': {'daño': 6, 'precio': None, 'venta': 5, 'manos': 1, 'arma': True, 'cantidad': 4},'espada mágica': {'daño': 6, 'precio': 200, 'venta': 100, 'manos': 1, 'arma': True,'cantidad':2},'Hacha dos manos': {'daño': 12, 'precio': 30, 'venta': 15, 'manos': 2, 'arma': True, 'cantidad':2},'espada': {'daño': 8, 'precio': 10, 'venta': 0.8, 'manos': 1, 'arma': True, 'cantidad': 2} }
+bolsillo = {'espada goblin': {'daño': 6, 'precio': None, 'venta': 5, 'manos': 1, 'arma': True, 'cantidad': 2}, 'Monedas': 56}
 armario = {} #Variable general para el armario del jugador
 
-def cueva_jugador(inventario,stats_player):
+def cueva_jugador(inventario,bolsillo,stats_player):
     print("Muy bien jugador has llegado a tu cueva, aquí podrás descansar y guardar los objetos que más te interesen.")
     dormir = 0
     cueva = True
@@ -58,81 +59,116 @@ def cueva_jugador(inventario,stats_player):
                         print("Vas a dejar de dormir.")
                         cama = False
 
-#Continuar con el armario, solucionari problema acceder mochila ya que esta dentro de una funcion y eso no lo he tenido en cuenta
         elif decision == 2:
-            print("Has decidido guardar objetos.")
-            armario_est = True
-            print(f"Actualmente estos son tus objetos en el armario: {armario}")
+            guardar_objetos = True
 
-            while armario_est == True:
-                objeto_guardar = input(f"A que menu quieres acceder {inventario.keys()}, \n Elige: ")
+            while guardar_objetos == True:
+                eleccion_inventario = int(input("De que donde quieres guardar objetos 1) Mochila  2) Bolsillo  Elige: "))
 
-                if objeto_guardar == "Armas":
-                    print(f"Estas son tus armas: {inventario['Armas']}")
-                    objeto_guardar = input("Que objeto quieres guardar: ")
-                    if objeto_guardar not in armario and objeto_guardar in inventario["Armas"]:
-                        contador_objetos = 0
-                        armario.update({objeto_guardar:contador_objetos+1})
+                if eleccion_inventario == 1:
+                    print("\nEstos son tus objetos:")
+                    contador = 1
+                    for objetos in inventario:
+                        print(f"{contador})",objetos)
+                        contador += 1
 
+                    try:
+                        eleccion = input("\nQue objeto deseas guardar: ")
+                        print(inventario[eleccion]['cantidad'])
 
-                        #inventario.update({"Armas":inventario.get(objeto_guardar) - 1})
-                        print(armario)
-                    elif objeto_guardar in armario:
-                        contador_objetos = armario.get(objeto_guardar)
-                        armario.update({objeto_guardar: contador_objetos + 1})
-                        #inventario.update({"Armas": inventario.get(objeto_guardar) - 1})
-                        print(armario)
-                    else:
-                        print("El objeto introducido no existe")
+                    except KeyError:
+                        print("El objeto introducido no se encuentra en la mochila, introduce otro")
                         continue
+                    while guardar_objetos == True:
+                        try:
+                            #Revisar Hacha dos manos ya que salta un error
+                            cantidad = int(input((f"\nQue cantidad de {eleccion} quieres guardar: ")))
+                            if cantidad > 0:
+                                if cantidad <= inventario[eleccion]['cantidad']:
+                                    inventario[eleccion]['cantidad'] -= cantidad
+                                    armario.update(arma(eleccion))
+                                    armario[eleccion]['cantidad'] = cantidad
+                                    break
 
+                                else:
+                                    raise TypeError
+                            else:
+                                raise TypeError
 
-                elif objeto_guardar == "objetos":
-                    print(f"Estas son tus objetos: {inventario['objetos']}")
-                    objeto_guardar = input("Que objeto quieres guardar: ")
-                    if objeto_guardar not in armario and objeto_guardar in inventario["objetos"]:
-                        contador_objetos = 0
-                        armario.update({objeto_guardar: contador_objetos + 1})
-                        # inventario.update({"Armas":inventario.get(objeto_guardar) - 1})
-                        print(armario)
-                    elif objeto_guardar in armario:
-                        contador_objetos = armario.get(objeto_guardar)
-                        armario.update({objeto_guardar: contador_objetos + 1})
-                        # inventario.update({"Armas": inventario.get(objeto_guardar) - 1})
-                        print(armario)
-                    else:
-                        print("El objeto introducido no existe")
-                        continue
+                        except TypeError:
+                            print("\nLa cantidad introducida es incorrecta, o mayor a la posible, introduce otro dato")
+                            continue
+                    print(inventario)
+                    print(armario)
+
+                elif eleccion_inventario == 2:
+                    print("\nEstos son tus objetos:")
+                    contador = 1
+
+                    for objetos in bolsillo:
+                        print(f"{contador})", objetos)
+                        contador += 1
+                    while guardar_objetos == True:
+                        try:
+                            eleccion = input("\nQue objeto deseas guardar: ")
+                            if eleccion == 'Monedas':
+                                while guardar_objetos == True:
+                                    print("Las monedas no se pueden guardar elige otro objeto")
+                                    break
+                                continue
+                            else:
+
+                                while guardar_objetos == True:
+
+                                    try:
+                                        print(bolsillo[eleccion]['cantidad'])
+                                        # Revisar Hacha dos manos ya que salta un error
+                                        cantidad = int(input((f"\nQue cantidad de {eleccion} quieres guardar: ")))
+                                        if cantidad > 0:
+                                            if cantidad <= inventario[eleccion]['cantidad']:
+                                                inventario[eleccion]['cantidad'] -= cantidad
+                                                armario.update(arma(eleccion))
+                                                armario[eleccion]['cantidad'] = cantidad
+                                                break
+
+                                            else:
+                                                raise TypeError
+                                        else:
+                                            raise TypeError
+
+                                    except TypeError:
+                                        print(
+                                            "\nLa cantidad introducida es incorrecta, o mayor a la posible, introduce otro dato")
+                                        continue
+                                print(inventario)
+                                print(armario)
+
+                        except KeyError:
+                            print("El objeto introducido no se encuentra en la mochila, introduce otro")
+                            continue
+
+                eleccion = int(input("\nQuieres seguir guardando objetos (1) o deseas salir (0): " ))
+
+                if eleccion == 1:
                     continue
 
-                else:
-                    print("Eso no es un dato válido, intentalo de nuevo.")
-                    continue
-
-
+                elif eleccion == 0:
+                    print("\nVas a salir del menu del armario. ")
+                    guardar_objetos = False
 
         elif decision == 3:
             print("Muy bien has decidido salir de la cueva")
+            cueva = False
             #mapa(inv,mochila), aqui llamariamos de nuevo a la funcion del mapa para que el jugador eliga un sitio a donde ir
 
         else:
             print("La opción introducida no es correcta intentalo de nuevo, jugador.")
             continue
+    print("*Vuelves al poblado*")
+
+"""Cuando se guarda un objeto de un inventario se queda un valor x pero cuando sigues guardando el objeto pero en otro 
+inventario se resetea el valor"""
+
+cueva_jugador(mochila,bolsillo,stats_player)
 
 
-
-
-cueva_jugador(mochila,stats_player)
-
-
-#print(mochila)
-"""a = mochila.get("Armas")
-print(a)
-
-v = "espada"
-res = a.get(v) -1
-a.update()
-
-mochila.update({"Armas": mochila.get("Armas") - 1})
-print(mochila)
-"""
