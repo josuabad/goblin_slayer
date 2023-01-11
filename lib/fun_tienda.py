@@ -439,7 +439,7 @@ def fun_tienda(inventario, bolsillo, habilidad, puntos):  # Fun_Tienda()
                                 print(element, "\n")
                                 continue
                             print("-------------------------------------\n")
-                            input('Presiona ENTER para continuar...\n')
+                            input('Presiona ENTER para continuar...')
                             venta_obj = input(f'¿Cuál objeto quieres vender de tu inventario?\n'
                                               f'(ingresa "s" si quieres salir)\n'
                                               f'Ingresa el nombre del objeto: ')
