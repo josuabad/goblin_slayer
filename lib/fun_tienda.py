@@ -319,7 +319,9 @@ def fun_tienda(mochila, bolsa, habilidad, puntos):  # Fun_Tienda()
                     features.borrar_pantalla()
                     while True:
                         if origen.lower() == 'b':
-                            for element in bols
+                            for element in bolsillo:
+                                
+
 
                             print("-------------------------------------\n")
                             print(f'Tienes estos artículos para vender en bolsa: ')
@@ -457,4 +459,4 @@ bolsillo = {'espada goblin': {'daño': 6, 'precio': None, 'venta': 5, 'manos': 1
 
 mochi = {'monedas': 1000}
 
-# fun_tienda(mochi, bolsillo, personaje_habilidades)  # Llamando a la función tienda
+fun_tienda(mochi, bolsillo, personaje_habilidades)  # Llamando a la función tienda
