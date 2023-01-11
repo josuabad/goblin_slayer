@@ -63,7 +63,7 @@ def fun_mapa(player, inventario, bolsillo, stats_player, habilidad, puntos, arma
             input('Presiona ENTER para continuar...')
             funcionesjueguito.cueva_ogro(inventario,bolsillo,stats_player,habilidad)  # Ir a la cueva del ogro
         elif menu_viaje == 4:
-            Easter_Egg.EasterEgg(bolsillo, stats_player,)
+            Easter_Egg.EasterEgg(bolsill, stats_player,)
         else:
             print(f'Ese lugar no existe {player}, introduce otro.')
             input('Presiona ENTER para continuar...')

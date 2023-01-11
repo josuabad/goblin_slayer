@@ -229,7 +229,7 @@ def combate_ratas(inventario, personaje, habilidad):
 
 def combate_ogro(inventario, stats_player, habilidad):
     Combate, turno_player, turno_enemigo = False, False, False
-    vida_ogro = 1 #cambiar a 50
+    vida_ogro = 50
     dam_ogro = random.randint(1,12) + 2
     impacto_ogro = 16
     golpe_ogro = 0
