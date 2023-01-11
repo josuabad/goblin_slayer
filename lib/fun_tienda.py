@@ -10,7 +10,7 @@ import features
 # Parámetros de salida: inventario, bolsillo y habilidades.
 
 
-def fun_tienda(mochila, bolsa, habilidad, puntos):  # Fun_Tienda()
+def fun_tienda(inventario, bolsillo, habilidad, puntos):  # Fun_Tienda()
     print("=======================================")
     print("¡Bienvenido a la tienda jugador!\n=======================================")  # La bienvenida a la tienda.
     print("¿Qué te gustaría comprar?\n")
@@ -312,67 +312,63 @@ def fun_tienda(mochila, bolsa, habilidad, puntos):  # Fun_Tienda()
                     time.sleep(1)
                     input('Presiona ENTER para continuar...')
                     origen = str(input("Donde está el objeto que quieres vender?\n"
-                                       "---> Bolsa\n"
-                                       "---> Mochila\n"
+                                       "---> Bolsillo\n"
+                                       "---> Inventario\n"
                                        "Introduce el lugar [m/b]: "))
                     time.sleep(1)
                     features.borrar_pantalla()
                     while True:
                         if origen.lower() == 'b':
                             for element in bolsillo:
-                                
-
-
-                            print("-------------------------------------\n")
-                            print(f'Tienes estos artículos para vender en bolsa: ')
-                            print("-------------------------------------\n")
-                            print(f'Objeto              |    Precio para vender    |   Tienes:\n'
-                                  f'1. espada goblin    |    {bolsa["espada goblin"]["venta"]} monedas             |   '
-                                  f'   {bolsa["espada goblin"]["cantidad"]}\n'
-                                  f'2. escudo goblin    |    {bolsa["escudo goblin"]["venta"]} monedas             |   '
-                                  f'   {bolsa["escudo goblin"]["cantidad"]}\n')
-                            print("-------------------------------------\n")
-                            input('Presiona ENTER para continuar...')
-                            venta_obj = input(f'¿Cuál objeto quieres vender de tu bolsa?\n'
-                                              f'(ingresa "s" si quieres salir\n'
-                                              f'Ingresa el nombre del objeto: ')
-                            if venta_obj.lower() == 's':
-                                print("Regresemos...")
-                                time.sleep(2)
-                                features.borrar_pantalla()
-                                break
-                            elif venta_obj in bolsa:
-                                time.sleep(1)
-                                if bolsa[venta_obj]["cantidad"] >= 1:
-                                    print(f'Tienes {bolsa[venta_obj]["cantidad"]} {venta_obj}')
-                                    num_venta = int(input("¿Cuántas quieres vender?\n"
-                                                          "---> Introduce el número: "))
-                                    print(f'Muy bien, te compraré: {num_venta} {venta_obj}')
-                                    time.sleep(2)
-                                    mochila.update({'monedas': mochila.get('monedas') + bolsa[venta_obj][
-                                        'venta'] * num_venta})
-                                    print(f'Aquí tienes tu {bolsa[venta_obj]["venta"] * num_venta} monedas')
-                                    print(f'Muy bien jugador, ahora tienes {mochila.get("monedas")} monedas')
-                                    mochila[venta_obj]['cantidad'] -= num_venta
-                                    print(f'Ahora tienes {bolsa[venta_obj]["cantidad"] - num_venta} {venta_obj}')
+                                print("-------------------------------------\n")
+                                print(f'Tienes estos objetos para vender en tu bolsillo: ')
+                                print("-------------------------------------\n")
+                                print(f'Objeto:\n'
+                                      f'{element}\n')
+                                print("-------------------------------------\n")
+                                input('Presiona ENTER para continuar...')
+                                venta_obj = input(f'¿Cuál objeto quieres vender de tu bolsa?\n'
+                                                  f'(ingresa "s" si quieres salir)\n'
+                                                  f'Ingresa el nombre del objeto: ')
+                                if venta_obj.lower() == 's':
+                                    print("Regresemos...")
                                     time.sleep(2)
                                     features.borrar_pantalla()
                                     break
+                                elif venta_obj in bolsillo:
+                                    time.sleep(1)
+                                    if venta_obj == 'espada goblin' or venta_obj == 'escudo goblin':
+                                        if bolsillo[venta_obj]["cantidad"] >= 1:
+                                            print(f'Tienes {bolsillo[venta_obj]["cantidad"]} {venta_obj}')
+                                            num_venta = int(input("¿Cuántas quieres vender?\n"
+                                                                  "---> Introduce el número: "))
+                                            print(f'Muy bien, te compraré: {num_venta} {venta_obj}')
+                                            time.sleep(2)
+                                            inventario.update({'monedas': inventario.get('monedas') + bolsillo[venta_obj][
+                                                'venta'] * num_venta})
+                                            print(f'Aquí tienes tu {bolsillo[venta_obj]["venta"] * num_venta} monedas')
+                                            print(f'Muy bien jugador, ahora tienes {inventario.get("monedas")} monedas')
+                                            bolsillo[venta_obj]['cantidad'] -= num_venta
+                                            print(f'Ahora tienes {bolsillo[venta_obj]["cantidad"] - num_venta} '
+                                                  f'{venta_obj}')
+                                            time.sleep(2)
+                                            features.borrar_pantalla()
+                                            break
 
-                                elif bolsa[venta_obj]["cantidad"] < 1:
+                                        elif bolsillo[venta_obj]["cantidad"] < 1:
+                                            time.sleep(0.5)
+                                            print(f"No tienes {venta_obj} para vender")
+                                            print("Ve tu bolsa de nuevo y dime algo que si tengas.")
+                                            time.sleep(2)
+                                            features.borrar_pantalla()
+                                            continue
+                                elif venta_obj not in bolsillo:
                                     time.sleep(0.5)
-                                    print(f"No tienes {venta_obj} para vender")
-                                    print("Ve tu bolsa de nuevo y dime algo que si tengas.")
+                                    print("Lo siento ese objeto no está en tu bolsa, ingresa otro de nuevo...")
                                     time.sleep(2)
                                     features.borrar_pantalla()
                                     continue
-                            elif venta_obj not in bolsa:
-                                time.sleep(0.5)
-                                print("Lo siento ese objeto no está en tu bolsa, ingresa otro de nuevo...")
-                                time.sleep(2)
-                                features.borrar_pantalla()
-                                continue
-                        if origen.lower() == 'm':
+                        i"""f origen.lower() == 'm':
                             print("-------------------------------------\n")
                             print(f'Tienes estos artículos para vender en mochila: ')
                             print("-------------------------------------\n")
@@ -423,7 +419,7 @@ def fun_tienda(mochila, bolsa, habilidad, puntos):  # Fun_Tienda()
                                 print("Lo siento ese objeto no está en tu mochila, ingresa otro de nuevo...")
                                 time.sleep(2)
                                 features.borrar_pantalla()
-                                continue
+                                continue"""
 
                 elif vender_tienda == 2:
                     time.sleep(0.5)
@@ -442,7 +438,7 @@ def fun_tienda(mochila, bolsa, habilidad, puntos):  # Fun_Tienda()
             time.sleep(0.5)  # Si la variable es igual a 5 es porque escogiste salir.
             print("Hasta pronto, espero verlo de nuevo\n")  # Despedida.
             time.sleep(1)
-            return mochila
+            # return mochila
         else:
             print("No tenemos eso en la tienda, ¡vuelva a introducir un número válido!\n")  # Esto es por si el jugador
             # introduce algo que no está
@@ -457,6 +453,6 @@ puntos = 1
 bolsillo = {'espada goblin': {'daño': 6, 'precio': None, 'venta': 5, 'manos': 1, 'arma': True, 'cantidad': 3},
             'escudo goblin': {'precio': None, 'venta': 5, 'destreza': 1, 'protección': True, 'cantidad': 1}}
 
-mochi = {'monedas': 1000}
+inventario = {'monedas': 1000}
 
-fun_tienda(mochi, bolsillo, personaje_habilidades)  # Llamando a la función tienda
+fun_tienda(inventario, bolsillo, personaje_habilidades)  # Llamando a la función tienda
