@@ -2,7 +2,7 @@
 # Versión oficial
 from lib import features
 from lib import articulos
-# from lib import config_habilidades
+from lib import config_habilidades
 
 
 # Desarrollo
