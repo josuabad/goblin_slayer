@@ -499,6 +499,7 @@ def fun_tienda(inventario, bolsillo, habilidad, puntos):  # Fun_Tienda()
             time.sleep(0.5)  # Si la variable es igual a 5 es porque escogiste salir.
             print("Hasta pronto, espero verlo de nuevo\n")  # Despedida.
             time.sleep(1)
+
             return bolsillo, bolsillo, habilidad, puntos
         else:
             print("No tenemos eso en la tienda, ¡vuelva a introducir un número válido!\n")  # Esto es por si el jugador
