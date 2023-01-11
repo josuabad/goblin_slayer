@@ -45,6 +45,7 @@ while run:
             run = False
             break
 input('Pulsa ENTER para continuar...')
+features.borrar_pantalla()
 
 # Entra al juego
 fun_mapa.fun_mapa(nombre, mochila, bolsillo, personaje_especificas, personaje_habilidades, puntos_habilidades, armario)

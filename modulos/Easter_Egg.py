@@ -1,6 +1,6 @@
-def EasterEgg(inventario,stats_player,variable=False): #Se introduce la variable booleana de EasterEgg para que solo se pueda hacer una vez
+def EasterEgg(bolsillo,stats_player): #Se introduce la variable booleana de EasterEgg para que solo se pueda hacer una vez
     print("Vaya parece que explorando has encontrado un camino secreto")
-    while variable == True:
+    while bolsillo['Llave'] == True:
         decision = int(input("Quieres continuar por este camino SI||NO  (1/0): "))
 
         if decision == 1:
@@ -8,15 +8,16 @@ def EasterEgg(inventario,stats_player,variable=False): #Se introduce la variable
             print("Continuas avanzando...")
             print("Vaya parece que has encontrado un cofre misterioso, parece que se requiere de una llave para poder acceder a él")
 
-            if inventario.get("Llave") == True:
+            if bolsillo.get("Llave") == True:
                 print("Al parecer tienes en tu inventario una llave misteriosa, deseas usarla")
                 decision = int(input("SI||NO (1/0): "))
 
                 if decision == 1:
                     print("Vale has decidido usar la llave")
-                    inventario.update({"Llave": False})
-                    print("Vaya sorpresa, en el cofre se encontraban 100 monedas y una Espada Igneá")
-                    inventario.update({"arma":inventario.get("arma") | {"Espada ignea":5}}), inventario.update({"Monedas": inventario.get("Monedas") + 100}) #Esta solucion es de genio ;), el operador '|' fusiona 2 diccionario
+                    bolsillo.update({"Llave": False})
+                    print("Vaya sorpresa, en el cofre se encontraban 100 monedas y parece que has ganado 100 de experiencia")
+                    bolsillo['monedas'] = bolsillo['monedas'] + 100
+                    stats_player['experiencia'] = stats_player['experiencia'] + 100
                     print("Cuidado Jugador parece que la Tierra ha empezado a temblar.")
                     print("Tienes que huir, y volver por donde has venido.")
                     print("*Vuelves corriendo por donde has venido, mientras todo se derrumba*")
@@ -45,5 +46,5 @@ def EasterEgg(inventario,stats_player,variable=False): #Se introduce la variable
             continue
     else:
         print("Vaya parece que el camino esta bloqueado")
-    return inventario, stats_player
+    return bolsillo, stats_player
 

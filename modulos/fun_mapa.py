@@ -38,12 +38,12 @@ def fun_mapa(player, inventario, bolsillo, stats_player, habilidad, puntos, arma
                 features.borrar_pantalla()
                 print(f'Genial, vamos a la Taberna')
                 input('Presiona ENTER para continuar...')
-                Taberna.taberna(inventario, stats_player)  # Ir a la taberna
+                Taberna.taberna(inventario, stats_player,habilidad,bolsillo)  # Ir a la taberna
             elif lugar_pueblo == 4:
                 features.borrar_pantalla()
                 print(f'Vale, vamos a tu cueva {player}')
                 input('Presiona ENTER para continuar...')
-                Cueva_Jugador.cueva_jugador(inventario, bolsillo, stats_player, armario)  # Ir a tu cueva o casa
+                Cueva_Jugador.cueva_jugador(inventario, bolsillo, stats_player,habilidad, armario)  # Ir a tu cueva o casa
             elif lugar_pueblo == 5:
                 print("Regresemos...")
                 input('Presiona ENTER para continuar...')
@@ -61,9 +61,9 @@ def fun_mapa(player, inventario, bolsillo, stats_player, habilidad, puntos, arma
             features.borrar_pantalla()
             print("Vamos a la CUEVA DEL OGRO, ¡prepárate!")
             input('Presiona ENTER para continuar...')
-            funcionesjueguito.combate(inventario, stats_player, 3, habilidad, bolsillo)  # Ir a la cueva del ogro
+            funcionesjueguito.cueva_ogro(inventario,bolsillo,stats_player,habilidad)  # Ir a la cueva del ogro
         elif menu_viaje == 4:
-            Easter_Egg.EasterEgg(inventario, stats_player, variable=False)
+            Easter_Egg.EasterEgg(bolsillo, stats_player,)
         else:
             print(f'Ese lugar no existe {player}, introduce otro.')
             input('Presiona ENTER para continuar...')

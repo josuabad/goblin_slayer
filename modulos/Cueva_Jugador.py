@@ -2,7 +2,7 @@ from lib.articulos import *
 import time
 
 
-def cueva_jugador(inventario, bolsillo, stats_player, armario):
+def cueva_jugador(inventario, bolsillo, player, habilidades,armario):
     print("Muy bien jugador has llegado a tu cueva, aquí podrás descansar y guardar los objetos que más te interesen.")
     dormir = 0
     cueva = True
@@ -19,12 +19,11 @@ def cueva_jugador(inventario, bolsillo, stats_player, armario):
             while cama == True:
 
                 if dormir == 4:
-                    print(
-                        "Vaya parece que no puedes seguir durmiendo, has dormido bastante por ahora, volveras al menú.")
+                    print("Vaya parece que no puedes seguir durmiendo, has dormido bastante por ahora, volveras al menú.")
                     time.sleep(1)
                     cama = False
 
-                elif stats_player.get("vida") >= ((stats_player.get("const")) * 2 + 20):
+                elif player.get("vida") == ((habilidades.get("constitucion")*2)):
                     print("Parece que tiene la vida al máximo ahora no puedes dormir, volveras al menu.")
                     time.sleep(1)
                     cama = False
@@ -42,9 +41,9 @@ def cueva_jugador(inventario, bolsillo, stats_player, armario):
                         time.sleep(4)
 
                         dormir += 1
-                        stats_player.update({"vida": stats_player.get("vida") + 1})
+                        player.update({"vida": player.get("vida") + 1})
                         break
-                    print(f"Tu vida actual es de {stats_player.get('vida')} puntos.")
+                    print(f"Tu vida actual es de {player.get('vida')} puntos.")
                     decision_1 = int(input("Deseas seguir durmiendo o salir.  1) Dormir  2) Salir  Elige: "))
 
                     if decision_1 == 1:
@@ -150,7 +149,7 @@ def cueva_jugador(inventario, bolsillo, stats_player, armario):
                     continue
 
                 elif eleccion == 0:
-                    print("\nVas a salir del menu del armario. ")
+                    print("\nVas a salir del menu de la cueva. ")
                     guardar_objetos = False
 
         elif decision == 3:
@@ -161,6 +160,6 @@ def cueva_jugador(inventario, bolsillo, stats_player, armario):
         else:
             print("La opción introducida no es correcta intentalo de nuevo, jugador.")
             continue
-    print("*Vuelves al poblado*")
-    return inventario, bolsillo, stats_player, armario
+    print("*Vuelves al Mapa*")
+    return inventario, bolsillo, player,habilidades, armario
 
