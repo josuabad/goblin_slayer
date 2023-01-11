@@ -46,7 +46,13 @@ def habilidades(dict_habilidades: dict, puntos: int):
             if decision_1.lower() == 's':
                 while True:
                     mis_habilidades = input('¿Qué habilidad vas a mejorar? [f/d/c]: ')
-                    num_puntos = int(input('¿Cuántos puntos vas a utilizar?: '))
+                    num_puntos = input('¿Cuántos puntos vas a utilizar?: ')
+                    try:
+                        num_puntos = int(num_puntos)
+                    except:
+                        features.borrar_pantalla()
+                        print('Algo ha ido mal, repita el proceso por favor')
+                        continue
                     if mis_habilidades.lower() == 'f' and puntos >= 0 and num_puntos <= puntos:
                         reparto = nuevo_punto(dict_habilidades, 'fuerza', num_puntos, puntos)
                         puntos = reparto[1]

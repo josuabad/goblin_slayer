@@ -35,13 +35,12 @@ def medidor_de_bolsillos(bolsillo):
     cantidad_total = 0
     cantidad_monedas = 0
     for elemento in bolsillo:
-        try:
-            cantidad_total += bolsillo[elemento]["cantidad"]
-        except KeyError:
-            cantidad_monedas = bolsillo[elemento]
+        if elemento != 'Llave':
+            try:
+                cantidad_total += bolsillo[elemento]["cantidad"]
+            except:
+                cantidad_monedas = bolsillo[elemento]
     if cantidad_total == 0:
-        print('Todavía no tienes nada, sal a la aventura y cárgate con lo que te encuentres')
-        print('En el futuro te puede ser de gran ayuda')
         print(f'Tienes {cantidad_monedas} monedas')
         return True
     elif 9 <= cantidad_total <= 11:

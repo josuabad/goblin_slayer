@@ -28,6 +28,7 @@ while run:
     puntos_habilidades = set_habilidades[1]  # Actualización de los puntos de habilidad restantes
     config_habilidades.especificas_personaje(personaje_habilidades, personaje_especificas)
     print(f'Tus características son las siguientes: {personaje_especificas}')
+    input('Pulsa ENTER para continuar...')
     while True:
         if puntos_habilidades > 0:
             features.borrar_pantalla()
@@ -35,6 +36,7 @@ while run:
             if seguir.lower() == 's':
                 break
             elif seguir.lower() == 'n':
+                input('Pulsa ENTER para continuar...')
                 run = False
                 break
             else:
@@ -44,8 +46,6 @@ while run:
         else:
             run = False
             break
-input('Pulsa ENTER para continuar...')
-features.borrar_pantalla()
 
 # Entra al juego
 fun_mapa.fun_mapa(nombre, mochila, bolsillo, personaje_especificas, personaje_habilidades, puntos_habilidades, armario)

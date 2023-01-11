@@ -1,29 +1,34 @@
-import time
-from modulos import Taberna
-from modulos import fun_tienda
-from modulos import Easter_Egg
-from modulos import Cueva_Jugador
 from lib import features
-from modulos import funcionesjueguito
+from modulos import Taberna, fun_tienda, Easter_Egg, Cueva_Jugador, funcionesjueguito
 
 
 def fun_mapa(player, inventario, bolsillo, stats_player, habilidad, puntos, armario):  # Función Mapa
     while True:
         features.borrar_pantalla()
-        time.sleep(0.5)
-
-        menu_viaje = int(input("============================\n           "
+        menu_viaje = input("============================\n           "
                                "MAPA\n"
                                "============================\n"
                                "Elige a donde quieres ir:"
                                "\n1)Pueblo\n2)Cueva de los Goblins\n3)Cueva del Ogro\n"
-                               "Coloca el número de tu opción: "))
+                               "Coloca el número de tu opción: ")
+        try:
+            menu_viaje = int(menu_viaje)
+        except:
+            print('Algo ha ido mal, repita el proceso por favor')
+            input('Presiona ENTER para continuar...')
+            continue
         if menu_viaje == 1:
             features.borrar_pantalla()
             print("Vamos al pueblo")
             input('Presiona ENTER para continuar...')
-            lugar_pueblo = int(input(f'¿A que lugar del pueblo quieres ir?\n1) Tienda\n2) Alcantarillas\n3) Taberna\n'
-                                     f'4) {player} cueva\n5) Salir del pueblo\n - Inserta el número: '))
+            lugar_pueblo = input(f'¿A que lugar del pueblo quieres ir?\n1) Tienda\n2) Alcantarillas\n3) Taberna\n'
+                                     f'4) {player} cueva\n5) Salir del pueblo\n - Inserta el número: ')
+            try:
+                lugar_pueblo = int(menu_viaje)
+            except:
+                print('Algo ha ido mal, repita el proceso por favor')
+                input('Presiona ENTER para continuar...')
+                continue
             if lugar_pueblo == 1:
                 features.borrar_pantalla()
                 print(f'Vamos a entrar a la tienda')
@@ -63,7 +68,7 @@ def fun_mapa(player, inventario, bolsillo, stats_player, habilidad, puntos, arma
             input('Presiona ENTER para continuar...')
             funcionesjueguito.cueva_ogro(inventario,bolsillo,stats_player,habilidad)  # Ir a la cueva del ogro
         elif menu_viaje == 4:
-            Easter_Egg.EasterEgg(bolsill, stats_player,)
+            Easter_Egg.EasterEgg(bolsillo, stats_player,)
         else:
             print(f'Ese lugar no existe {player}, introduce otro.')
             input('Presiona ENTER para continuar...')

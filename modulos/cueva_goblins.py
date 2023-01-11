@@ -92,22 +92,22 @@ def pre_combate(mochila, habilidades, personaje):
     en_uso = {}
     num = 0
     features.borrar_pantalla()
-    print('Armas disponibles')
-    for item in mochila:  # Desplegable de todas armas
-        try:
-            mochila[item]['arma']
-            num_manos = mochila[item]['manos']
-            num += 1
-            print(f'  {num}. {item} | {num_manos} manos')
-            armas.append(item)
-        except KeyError:  # No hace falta el desplegable de los escudos, nada más se puede llevar uno
-            try:
-                mochila[item]['proteccion']
-                escudos.append(item)
-            except KeyError:  # Tampoco hace falta de las pociones, solo hay que guardar en número de pociones que tiene
-                pociones = mochila[item]['cantidad']
-    input('Presiona ENTER para continuar...')
     while True:  # Saber qué arma coger y si me quedan las manos libres para usar mi escudo
+        print('Armas disponibles')
+        for item in mochila:  # Desplegable de todas armas
+            try:
+                mochila[item]['arma']
+                num_manos = mochila[item]['manos']
+                num += 1
+                print(f'  {num}. {item} | {num_manos} manos')
+                armas.append(item)
+            except KeyError:  # No hace falta el desplegable de los escudos, nada más se puede llevar uno
+                try:
+                    mochila[item]['proteccion']
+                    escudos.append(item)
+                except KeyError:  # Tampoco hace falta de las pociones, solo hay que guardar en número de pociones que tiene
+                    pociones = mochila[item]['cantidad']
+        input('Presiona ENTER para continuar...')
         arma_eleccion = int(input('Introduce el número del arma que quieres coger: '))
         if arma_eleccion < 1 or arma_eleccion > len(armas) or type(arma_eleccion) != int:  # No existe la selección
             features.borrar_pantalla()
@@ -566,6 +566,7 @@ def combate_goblin(personaje, habilidades, mochila, bolsillo):
     # Combate
     preparacion = pre_combate(mochila, habilidades, personaje)
     pelea = combate(personaje, preparacion[0], bolsillo, clase_enemigo)
+    print('¡Ahora, toca volver elegir a donde vas!')
     return personaje, habilidades, mochila, bolsillo
 
 
