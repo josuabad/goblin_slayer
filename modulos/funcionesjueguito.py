@@ -301,7 +301,7 @@ def cueva_ogro(inventario, bolsillo, personaje,habilidades):
             break
         elif decision == 2:
             print("Muy bien, vuelve cuando quieras, o cuando estes preparado.")
-
+            return inventario,bolsillo, personaje, habilidades
         else:
             print("Eso no es un dato válido intentalo de nuevo. ")
             continue

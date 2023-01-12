@@ -24,7 +24,7 @@ def fun_mapa(player, inventario, bolsillo, stats_player, habilidad, puntos, arma
             lugar_pueblo = input(f'¿A que lugar del pueblo quieres ir?\n1) Tienda\n2) Alcantarillas\n3) Taberna\n'
                                      f'4) {player} cueva\n5) Salir del pueblo\n - Inserta el número: ')
             try:
-                lugar_pueblo = int(menu_viaje)
+                lugar_pueblo = int(lugar_pueblo)
             except:
                 print('Algo ha ido mal, repita el proceso por favor')
                 input('Presiona ENTER para continuar...')
